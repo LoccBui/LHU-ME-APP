@@ -1,32 +1,34 @@
 <template>
   <div class="container">
-    <button class="btn" @click="show()" >
+    <button class="btn" @click="lovePost()" >
         <img :src="sourceImage" />       
+        <span class="numberPost"> {{dataButton}} </span>
     </button>
   </div>
 </template>
 
 <script>
 export default {
-    name: "Button",
-    props: ['srcImg', 'type'],
+    name: "ButtonPost",
+    props: ['srcImg', 'type', 'dataButton'],
     data(){
         return{
             sourceImage: this.srcImg,
-            typeBtn: this.type
+            typeBtn: this.type,
         }
     },
     
-
     methods: {
-        show(){
+        lovePost(){
             if(this.typeBtn === 'love'){
                 this.sourceImage = 'https://img.icons8.com/color/20/000000/filled-like.png'
                 this.typeBtn = "loved"
+                this.dataButton++
             }
             else if(this.typeBtn === 'loved') {
                 this.sourceImage = 'https://img.icons8.com/material-outlined/20/000000/filled-like.png'
                 this.typeBtn = "love"
+                this.dataButton--
             }
         }
     }
@@ -45,6 +47,10 @@ export default {
     &:hover{
         background-color: #c6baba;
         cursor: pointer;
+    }
+
+    .numberPost{
+        margin-left: 5px;
     }
 
 }

@@ -9,7 +9,7 @@
                  </div>
 
                 <div class="post-box-user">
-                    <span class="post-user">LocBui</span>
+                    <span class="post-user" v-html="SourceName"></span>
                     <span class="post-time">2 giờ trước</span>
                 </div>
             </div>
@@ -22,41 +22,62 @@
         </div>
 
 
-        <div class="main-post">
-            [THÔNG BÁO]
-            BÁO CÁO THỰC TẬP VÀ TỐT NGHIỆP – Đợt Tháng 9/2022
-            (Đối với sinh viên Khoá 2018 trở về trước)
+        <div v-html="content" class="main-post">
+        </div>
 
-            1. Lịch trình cụ thể (up trong course BCTTTN_Dot092022)
-            2. Sinh viên Khóa 2018 và các khóa trở về trước chưa đăng ký thực tập và tốt nghiệp hoặc không đậu 1 trong hai học phần đều đăng ký theo link dưới đây.
-            3. Link đăng ký: https://forms.gle/WPcRhr58MHW2pAHRA
-            4. Lệ phí báo cáo tốt nghiệp lần 2: 3.00.000 VNĐ.
+
+        <div class="infoURL">
+            <span v-html="URLInfo"></span>
         </div>
 
         <div class="post-function">
-            <Button :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'"/>
-            <Button :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'"/>
-            <Button :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share'" />
-            <Button :srcImg="'https://img.icons8.com/external-creatype-glyph-colourcreatype/20/000000/external-eyes-basic-creatype-glyph-colourcreatype-3.png'"  :type="'eyes'" />
+            <ButtonPost :dataButton="numberLiked"  :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'"/>
+            <ButtonPost :dataButton="NumberComment" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'"/>
+            <ButtonPost :dataButton="NumberShared" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share'" />
+            <ButtonPost :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-glyph-colourcreatype/20/000000/external-eyes-basic-creatype-glyph-colourcreatype-3.png'"  :type="'eyes'" />
         </div>
 
     </div>
 </template>
 
 <script>
-import Button from './Button.vue';
+import ButtonPost from './ButtonPost.vue';
 export default {
     name: "PostInfo",
-    components: { Button },
+    props: ["dataPostAPI"],
+    components: {  ButtonPost },
     data(){
         return{
+            content: '',
+            numberLiked: '',
+            NumberComment: '',
+            NumberShared: '',
+            NumberView: '',
+            URLInfo: '',
+            SourceName: ''
         }
     },
+    created(){
+       if(this.dataPostAPI !== null){
+        console.log(this.dataPostAPI.Contents)
+            this.handlePostAPI(this.dataPostAPI)
+       }
+       else{
+            console.log("chua nhan")
+       }
+    },
     methods:{
-        replace(src, type){
-            
+        handlePostAPI(data){
+            this.content = data.Contents   
+            this.numberLiked = data.NumberLike
+            this.NumberComment = data.NumberComment
+            this.NumberShared = data.NumberShared
+            this.NumberView = data.NumberView
+            this.URLInfo = data.URLInfo
+            this.SourceName = data.SourceName
         }
     }
+
 }
 </script>
 
@@ -65,6 +86,13 @@ export default {
 .post-info-container{
     height: auto;
     padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius:20px;
+    border: thin solid rgba(84, 84, 87, 0.25);   
+}
+
+.post-info-container + .post-info-container{
+    margin-top: 100px;
 }
 
 .header-post{
@@ -99,14 +127,44 @@ export default {
  
 }
 
-
 .main-post{
+    text-align: start;
     padding: 10px 0;
+    line-height: 25px;
 }
+
+.infoURL{
+    height: auto;
+    border-radius:10px; 
+    border: thin solid rgba(84, 84, 87, 0.25);   
+    overflow: hidden;
+    padding: 0 0 20px;
+
+
+    .url-img-large  img{
+        width: 100%;
+        height: 100%;
+    }
+
+    a{
+        text-align: start;
+        color: #1565C0;
+        text-decoration: none;
+    }
+
+    .url-description{
+        font-size: 13px;
+        color: #959595;
+    }
+}
+
+
+
 
 .post-function{
     display: flex;
     justify-content: space-between;
+    padding: 10px 0;
 }
 
 </style>
