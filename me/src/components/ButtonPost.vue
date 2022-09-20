@@ -30,22 +30,30 @@ export default {
                 this.typeBtn = "love"
                 this.dataButton--
             }
+
+
+            if(this.typeBtn === 'comment') {
+                this.$emit('focus-input-new-comment')
+            }
+
+
         }
     }
 }
 </script>
 
 <style lang="scss">
+
 .btn{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 130px;
-    flex: 1;
     border: none;
+    width: 150px;
+    padding: 5px;
 
     &:hover{
-        background-color: #c6baba;
+         background-color: #c6baba;
         cursor: pointer;
     }
 

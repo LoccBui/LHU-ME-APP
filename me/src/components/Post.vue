@@ -56,7 +56,7 @@ export default {
 
 .post-container{
     margin: 0 auto;
-    width: 550px;
+    width: 700px;
     height: auto;
     background-color: #FFFFFF;    
 }

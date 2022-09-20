@@ -4,7 +4,7 @@
         <div class="header-post">
            
             <div class="user-box">
-                <div class="avatar">
+                <div class="avatar-post">
                      <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self">
                  </div>
 
@@ -15,15 +15,14 @@
             </div>
 
 
-           <div class="post-function">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/expand-arrow--v1.png"  />
+           <div class="post-expand">
+                <img class="arrow-expand" src="https://img.icons8.com/ios/20/000000/expand-arrow--v1.png"/>
            </div>
 
         </div>
 
 
-        <div v-html="content" class="main-post">
-        </div>
+        <div v-html="content" class="main-post"> </div>
 
 
         <div class="infoURL">
@@ -31,11 +30,31 @@
         </div>
 
         <div class="post-function">
-            <ButtonPost :dataButton="numberLiked"  :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'"/>
-            <ButtonPost :dataButton="NumberComment" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'"/>
+            <ButtonPost :dataButton="numberLiked"  :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'  "/>
+            <ButtonPost @focus-input-new-comment="focusInputCommnent()" :dataButton="NumberComment" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'  "/>
             <ButtonPost :dataButton="NumberShared" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share'" />
             <ButtonPost :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-glyph-colourcreatype/20/000000/external-eyes-basic-creatype-glyph-colourcreatype-3.png'"  :type="'eyes'" />
         </div>
+
+        <div class="post-action-like-info" >
+            <img src="https://img.icons8.com/fluency/20/000000/facebook-like.png"/>
+            <div class="number-like-info" v-html="UserLike"></div>
+        </div>
+
+
+        <div class="comment-post-info">
+            <div> {{CommentJsonString || ''}}</div>
+            <h1> comment box</h1>
+        </div>
+
+        <div class="post-new-comment">
+            <div class="avatar-post">
+                <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self">
+            </div>
+
+            <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." >
+        </div>
+
 
     </div>
 </template>
@@ -54,12 +73,14 @@ export default {
             NumberShared: '',
             NumberView: '',
             URLInfo: '',
-            SourceName: ''
+            SourceName: '',
+            UserLike: '',
+            CommentJsonString: '',
         }
     },
     created(){
        if(this.dataPostAPI !== null){
-        console.log(this.dataPostAPI.Contents)
+        // console.log(this.dataPostAPI.Contents)
             this.handlePostAPI(this.dataPostAPI)
        }
        else{
@@ -75,6 +96,14 @@ export default {
             this.NumberView = data.NumberView
             this.URLInfo = data.URLInfo
             this.SourceName = data.SourceName
+            this.UserLike= data.UserLike
+
+            let commentJson = JSON.parse(data.CommentJsonString)
+            this.CommentJsonString = commentJson[0].CommentText 
+        },
+        
+        focusInputCommnent(){
+            this.$refs.inputNewComment.focus()
         }
     }
 
@@ -104,15 +133,12 @@ export default {
 
     .user-box{
         display: flex;
-        
-        .avatar{
-            border-radius: 20%;
-        }
+
 
         .avatar-self{
             width: 40px;
             height: 40px;
-            border-radius: 20%;
+            border-radius: 50%;
             vertical-align: middle;
         }
 
@@ -121,9 +147,25 @@ export default {
             flex-direction: column;
             align-items: flex-start;
             margin-left: 10px;
+
+            .post-user{
+                color: #1565C0;
+                cursor: pointer;
+            }
+
+            .sharedUser{
+                color: #959595;
+            }
          }
     }
 
+    .post-expand{
+
+    
+        .arrow-expand:hover{
+            cursor: pointer;
+        }
+    }
  
 }
 
@@ -135,10 +177,9 @@ export default {
 
 .infoURL{
     height: auto;
-    border-radius:10px; 
     border: thin solid rgba(84, 84, 87, 0.25);   
     overflow: hidden;
-    padding: 0 0 20px;
+    padding: 20px 0;
 
 
     .url-img-large  img{
@@ -158,13 +199,68 @@ export default {
     }
 }
 
-
-
-
 .post-function{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 10px 0;
+    border: thin solid rgba(84, 84, 87, 0.25);   
+    overflow: hidden;
+}
+
+.post-action-like-info{
+    display: flex;
+    align-items: center;
+    text-align: start;
+    padding: 10px;
+    height: auto;
+    border: thin solid rgba(84, 84, 87, 0.25);   
+    
+    
+    .number-like-info{
+        color:#1565C0;
+        margin-left: 5px;
+
+        &:hover{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+}
+
+.comment-post-info{
+    width: 100%;
+    border: thin solid rgba(84, 84, 87, 0.25);   
+    height: auto;
+}
+
+.post-new-comment{
+    display: flex;
+    padding: 20px 0 0;
+
+    .avatar-post{
+
+        .avatar-self{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+    }
+    
+    .input-new-comment{
+        flex: 1;
+        margin-left: 10px;
+        text-indent: 10px; //margin placeholder
+        border-radius: 20px;
+        border: thin solid rgba(84, 84, 87, 0.25);   
+
+        &:focus{
+            border: thin solid rgba(84, 84, 87, 0.25);   
+            outline: none;
+        }
+    }
+
 }
 
 </style>
