@@ -36,8 +36,12 @@ export default {
                 this.$emit('focus-input-new-comment')
             }
 
-
+            if(this.typeBtn === 'share'){
+                alert('share')
+                this.$emit('open-share-box')
+            }
         }
+
     }
 }
 </script>
@@ -51,9 +55,10 @@ export default {
     border: none;
     width: 150px;
     padding: 5px;
+    background-color: white;
 
     &:hover{
-         background-color: #c6baba;
+        background-color: #c6baba;
         cursor: pointer;
     }
 
