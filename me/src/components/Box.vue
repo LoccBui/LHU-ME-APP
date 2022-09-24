@@ -7,7 +7,7 @@
 <script>
 export default {
     name: 'Box',
-    props: ['widthBox', 'heightBox', 'contentBox','shareBoxOpen'],
+    props: ['widthBox', 'heightBox', 'contentBox','shareBoxOpen', 'seenBoxOpen'],
     data() {
         return {
             dataBoxOpen: this.shareBoxOpen
@@ -42,7 +42,6 @@ export default {
 
 <style lang="scss">
 #box-container{
-    position: relative;
     width: var(--widthBox);
     height: var(--heightBox);
     z-index: 1000;
@@ -103,15 +102,16 @@ export default {
     bottom: 0;
     left: 0;
     background-color: rgba(0,0,0, 0.4);
+    z-index: 3;
 }
 
 
 .post-share-box{
+    position: relative;
+    z-index: 2;
     width: var(--widthBox);
     height: var(--heightBox);
-    z-index: 100;
     background-color: white;
-    position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -135,10 +135,58 @@ export default {
 }
 
 .close-icon{
-    background-color: #248fc1;
     &:hover{
         cursor: pointer;
     }
+}
+
+
+// Seen Post Box
+.post-seen-box{
+    width: var(--widthBox);
+    height: var(--heightBox);
+    z-index: 100;
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    z-index: 1000;
+    overflow: hidden;
+
+    .header-box{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.avatar-self{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.list-seen{
+    display: flex;
+    align-items: center;
+    background-color: #248fc1;
+    padding: 10px;
+
+
+    .user-seen-avatar{
+
+    }
+
+    .user-seen-info{
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+        margin-left: 10px;
+    }   
 }
 
 </style>

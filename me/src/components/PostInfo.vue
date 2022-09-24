@@ -83,9 +83,6 @@
                         <button>Icon comment</button>
                         <a href="#">Trả lời</a>
                     </div>
-
-
-
                 </div>
 
                 <!-- <button @click="testValue()" >Click for test</button> -->
@@ -111,8 +108,12 @@
         <div class="sharing-box">
             <Box v-if="shareBoxOpen" :widthBox="'500px'" :heightBox="'auto'" :contentBox="shareBoxContent()"  
             :shareBoxOpen="shareBoxOpen"
-            @close-share-box="openCloseShareBox()"
-            />
+            @close-share-box="openCloseShareBox()"/>
+        </div>
+
+        <!-- Seen Post -->
+        <div class="seen-box">
+            <Box v-if="seenBoxOpen" :widthBox="'500px'" :heightBox="'auto'" :contentBox="seenBoxContent()"   />
         </div>
 
         
@@ -130,6 +131,7 @@ export default {
         return{
             postMenuDropDown: false,
             shareBoxOpen: false,
+            seenBoxOpen: false,
             content: '',
             numberLiked: '',
             NumberComment: '',
@@ -221,6 +223,42 @@ export default {
                 </div>
             `      
         },
+
+        seenBoxContent() {
+            return `
+            <div class="overlay">
+                <div class="post-seen-box">
+
+                    <div class="header-box">
+                        <h3>Những người đã xem bài viết</h3>
+
+                        <div class="close-box" >
+                            <img src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png" class="close-icon">    
+                        </div>
+                    </div>
+
+                    <div class="list-seen">
+                        
+                        <div class="user-seen-avatar">
+                            <img class="avatar-self" 
+                            src="https://file.lhu.edu.vn/me/avatar/122000110"" 
+                            alt="User" />
+                        </div>
+                            
+                        <div class="user-seen-info">
+                            <span>Username</span>
+                            <span>name - class</span>
+                            <span>time</span>
+    
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+                
+            `
+        }
 
     }
 
