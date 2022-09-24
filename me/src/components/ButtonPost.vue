@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <button class="btn" @click="lovePost()" >
+    <button class="btn" @click="actionButton()" >
         <img :src="sourceImage" />       
         <span class="numberPost"> {{dataButton}} </span>
     </button>
@@ -19,7 +19,7 @@ export default {
     },
     
     methods: {
-        lovePost(){
+        actionButton(){
             if(this.typeBtn === 'love'){
                 this.sourceImage = 'https://img.icons8.com/color/20/000000/filled-like.png'
                 this.typeBtn = "loved"
@@ -31,15 +31,19 @@ export default {
                 this.dataButton--
             }
 
-
             if(this.typeBtn === 'comment') {
                 this.$emit('focus-input-new-comment')
             }
 
             if(this.typeBtn === 'share'){
-                alert('share')
-                this.$emit('open-share-box')
             }
+
+            if(this.typeBtn === 'see'){
+                this.sourceImage = 'https://img.icons8.com/sf-regular/19/000000/visible.png'
+                this.typeBtn = "saw"
+                this.dataButton++
+            }
+
         }
 
     }

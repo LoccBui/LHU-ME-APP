@@ -6,7 +6,8 @@
             
                 <div class="user-box">
                     <div class="avatar-post">
-                        <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self">
+                        <img :src="`https://file.lhu.edu.vn/me/avatar/${Avatar}.jpg`" 
+                        alt="Avatar" class="avatar-self">
                     </div>
 
                     <div class="post-box-user">
@@ -24,15 +25,31 @@
 
             <div v-html="content" class="main-post"> </div>
 
+            <div class="wrap-image">
+                <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
+
+                    <img class="img-attach" alt="File" 
+                        :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`" 
+                    />
+                </div>
+            </div>
+
+
             <div class="infoURL">
                 <span v-html="URLInfo"></span>
             </div>
 
             <div class="post-function">
                 <ButtonPost :dataButton="numberLiked"  :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'  "/>
+
                 <ButtonPost @focus-input-new-comment="focusInputCommnent()" :dataButton="NumberComment" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'  "/>
-                <ButtonPost @open-share-box="openShareBox()" :dataButton="NumberShared" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share' " />
-                <ButtonPost  :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-glyph-colourcreatype/20/000000/external-eyes-basic-creatype-glyph-colourcreatype-3.png'"  :type="'eyes'" />
+
+                <ButtonPost      
+                :dataButton="NumberShared"
+                @click.native="openCloseShareBox()" 
+                :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share' " />
+
+                <ButtonPost :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-filed-outline-colourcreatype/20/000000/external-eyes-basic-creatype-filed-outline-colourcreatype-3.png'"  :type="'see'" />
             </div>
 
             <div class="post-action-like-info" >
@@ -41,9 +58,37 @@
             </div>
 
 
+            <!-- Comment -->
             <div class="comment-post-info">
                 <div> {{CommentJsonString || ''}}</div>
-                <h1> comment box</h1>
+
+                <div v-for="(comment,index) of CommentJsonString" :key="index" class="comment-cover">
+
+                    <div class="user-comment">
+                        <img class="avatar-self" 
+                        :src="`https://file.lhu.edu.vn/me/avatar/${comment.Avatar}.jpg`" 
+                        alt="User" />
+                    </div>
+                
+                    <div class="comment-box">
+                        <span class="comment-id">{{comment.SourceName}}</span>
+                        <span class="comment-content">{{comment.CommentText}}</span>
+                        <span class="commnent-time">{{comment.CreateTime}} </span>   
+                    </div>
+
+                    <div class="comment-function">         
+                       <img src="https://img.icons8.com/fluency/20/000000/facebook-like.png"/>
+
+                        <a href="#">Thích</a>
+                        <button>Icon comment</button>
+                        <a href="#">Trả lời</a>
+                    </div>
+
+
+
+                </div>
+
+                <!-- <button @click="testValue()" >Click for test</button> -->
                 
             </div>
 
@@ -55,7 +100,7 @@
                 <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." >
             </div>
 
-            <!-- Box appear -->
+            <!-- Drop down Box-->
             <div class="drop-down-menu">
                 <Box v-if="postMenuDropDown" :widthBox="'300px'" :heightBox="'auto'" :contentBox="postDropDownMenu()" />
             </div>
@@ -64,12 +109,13 @@
 
             <!-- Share Box -->
         <div class="sharing-box">
-            <Box v-if="shareBoxOpen" :widthBox="'500px'" :heightBox="'auto'"
-             :contentBox="showShareBox()" />
+            <Box v-if="shareBoxOpen" :widthBox="'500px'" :heightBox="'auto'" :contentBox="shareBoxContent()"  
+            :shareBoxOpen="shareBoxOpen"
+            @close-share-box="openCloseShareBox()"
+            />
         </div>
 
-          
-
+        
     </div>
 </template>
 
@@ -92,16 +138,20 @@ export default {
             URLInfo: '',
             SourceName: '',
             UserLike: '',
-            CommentJsonString: '',
+            Avatar: '',
+            CommentJsonString: [],
+            AttachJsonString: [],
+
         }
     },
+
     created(){
        if(this.dataPostAPI !== null){
-        // console.log(this.dataPostAPI.Contents)
+            //  console.log("API", this.dataPostAPI)
             this.handlePostAPI(this.dataPostAPI)
        }
        else{
-            console.log("chua nhan")
+            console.log("Can get API")
        }
     },
     methods:{
@@ -114,9 +164,10 @@ export default {
             this.URLInfo = data.URLInfo
             this.SourceName = data.SourceName
             this.UserLike= data.UserLike
+            this.Avatar = data.Avatar
+            this.CommentJsonString = JSON.parse(data.CommentJsonString)
+            this.AttachJsonString = JSON.parse(data.AttachJsonString)
 
-            let commentJson = JSON.parse(data.CommentJsonString)
-            this.CommentJsonString = commentJson[0].CommentText 
         },
         
         focusInputCommnent(){
@@ -137,19 +188,20 @@ export default {
             this.postMenuDropDown = !this.postMenuDropDown
         },
 
-        openShareBox(){ 
-            this.shareBoxOpen = true
+        openCloseShareBox(){ 
+            this.shareBoxOpen = !this.shareBoxOpen
         },
 
-        showShareBox(){
+        shareBoxContent(){
             return `
                <div class="overlay">
                     <div class="post-share-box">
                     
-                    <div class="header-share-box">
+                    <div class="header-box">
                         <h3>Chia sẻ bài viết này</h3>
-                        <div class="close-box">
-                            <img class="close-icon" @click="abc()" src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png"/>    
+
+                        <div class="close-box" >
+                            <img src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png" class="close-icon">    
                         </div>
                     </div>
 
@@ -168,9 +220,8 @@ export default {
                 </div>
                 </div>
             `      
-        }
-        
-       
+        },
+
     }
 
 }
@@ -328,6 +379,40 @@ export default {
         }
     }
 
+}
+
+
+.comment-cover{
+    background-color: wheat;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    &:hover{
+        background-color: #959595;    
+        cursor: pointer;
+    }
+
+
+    .avatar-self{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+
+    .comment-box{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 10px;
+        flex: 1;
+    }
+
+    .comment-function{
+        display: inline-block;
+        background-color: red;
+    }
 }
 
 </style>

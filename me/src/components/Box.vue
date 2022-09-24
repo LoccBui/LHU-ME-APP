@@ -1,16 +1,16 @@
 <template>
   <div id="box-container" :style="cssProps">
-    <div v-html="contentBox"></div>
+     <div v-html="contentBox"></div>
   </div>
 </template>
 
 <script>
 export default {
     name: 'Box',
-    props: ['widthBox', 'heightBox', 'contentBox'],
+    props: ['widthBox', 'heightBox', 'contentBox','shareBoxOpen'],
     data() {
         return {
-
+            dataBoxOpen: this.shareBoxOpen
         }
     },
     computed:{
@@ -20,21 +20,32 @@ export default {
                 '--heightBox': this.heightBox
             }
         }
+        
     },
     methods:{
-        abc(){
-            alert('abc');
-        }
+       shareBoxState(){
+        let element = document.getElementsByClassName('close-icon')[0]
+
+        element.addEventListener('click', () =>{
+            this.dataBoxOpen = false
+            this.$emit('close-share-box', this.dataBoxOpen)
+        })
+
+       }
+    },
+    mounted() {
+       this.shareBoxState()
     }
+
 }
 </script>
 
 <style lang="scss">
 #box-container{
+    position: relative;
     width: var(--widthBox);
     height: var(--heightBox);
-    z-index: 100;
-    background-color: red;
+    z-index: 1000;
 }
 
 .post-menu{
@@ -105,10 +116,10 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    z-index: 101;
+    z-index: 1000;
 
 
-    .header-share-box{
+    .header-box{
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -124,7 +135,7 @@ export default {
 }
 
 .close-icon{
-
+    background-color: #248fc1;
     &:hover{
         cursor: pointer;
     }

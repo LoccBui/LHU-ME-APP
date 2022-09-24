@@ -1,18 +1,17 @@
 <template>
   <div>
     <div class="loading" v-if="loading">
-      <h1>loading</h1>
+      <img class="icon-loading" src="../assets/img/gif/icon_spinner.gif" alt="Loading">
     </div>
 
     <div v-else class="post-container" >
-
       <div  v-for="(post,index) in dataPostAPI" :key="index">
           <div class="space">
-            <PostInfo   :dataPostAPI="post" />
+            <PostInfo :dataPostAPI="post"  />
           </div>
-      </div>   
-           
+      </div>          
     </div>
+
 
   </div>
 
@@ -63,6 +62,13 @@ export default {
 
 .space{
   margin-top: 50px;
+}
+
+.icon-loading{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 
