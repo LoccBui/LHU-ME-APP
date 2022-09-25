@@ -49,7 +49,9 @@
                 @click.native="openCloseShareBox()" 
                 :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share' " />
 
-                <ButtonPost :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-filed-outline-colourcreatype/20/000000/external-eyes-basic-creatype-filed-outline-colourcreatype-3.png'"  :type="'see'" />
+                <ButtonPost 
+                @click.native="openCloseSeenBox()"
+                :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-filed-outline-colourcreatype/20/000000/external-eyes-basic-creatype-filed-outline-colourcreatype-3.png'"  :type="'see'" />
             </div>
 
             <div class="post-action-like-info" >
@@ -64,25 +66,39 @@
 
                 <div v-for="(comment,index) of CommentJsonString" :key="index" class="comment-cover">
 
-                    <div class="user-comment">
-                        <img class="avatar-self" 
-                        :src="`https://file.lhu.edu.vn/me/avatar/${comment.Avatar}.jpg`" 
-                        alt="User" />
-                    </div>
+                    <div class="wrapper-left-comment">
+                        <div class="left-comment-cover">
+                        
+                            <div class="user-comment">
+                                <img class="avatar-self" 
+                                :src="`https://file.lhu.edu.vn/me/avatar/${comment.Avatar}.jpg`" 
+                                alt="User" />
+                            </div>
                 
-                    <div class="comment-box">
-                        <span class="comment-id">{{comment.SourceName}}</span>
-                        <span class="comment-content">{{comment.CommentText}}</span>
-                        <span class="commnent-time">{{comment.CreateTime}} </span>   
-                    </div>
+                            <div class="comment-box">
+                                <span class="comment-name">{{comment.SourceName}}</span>
+                                <span class="comment-content">{{comment.CommentText}}</span>      
 
-                    <div class="comment-function">         
-                       <img src="https://img.icons8.com/fluency/20/000000/facebook-like.png"/>
+                                <div class="comment-function">         
+                                    <span>1 gio truoc </span>                            
+                                    <span>1 luot thich</span>                            
+                                    <span>Tra loi</span>                                      
+                                </div>
+                            </div>                            
+                        </div>
 
-                        <a href="#">Thích</a>
-                        <button>Icon comment</button>
-                        <a href="#">Trả lời</a>
+                        <div class="love-comment" @click="testValue()" >
+                            <img  src="https://img.icons8.com/material-outlined/20/000000/filled-like.png" alt="Love Comment Icon">
+                        </div> 
+
+                        
                     </div>
+                    
+
+                   
+
+                       <!-- <span class="commnent-time">{{comment.CreateTime}} </span>       -->
+                          
                 </div>
 
                 <!-- <button @click="testValue()" >Click for test</button> -->
@@ -113,7 +129,12 @@
 
         <!-- Seen Post -->
         <div class="seen-box">
-            <Box v-if="seenBoxOpen" :widthBox="'500px'" :heightBox="'auto'" :contentBox="seenBoxContent()"   />
+            <Box v-if="seenBoxOpen" 
+            :widthBox="'500px'"
+            :heightBox="'auto'" 
+            :seenBoxOpen="seenBoxOpen"
+            :contentBox="seenBoxContent()" 
+            @close-seen-box="openCloseSeenBox()"/>
         </div>
 
         
@@ -232,7 +253,7 @@ export default {
                     <div class="header-box">
                         <h3>Những người đã xem bài viết</h3>
 
-                        <div class="close-box" >
+                        <div class="close-seen-box" >
                             <img src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png" class="close-icon">    
                         </div>
                     </div>
@@ -258,6 +279,14 @@ export default {
             </div>
                 
             `
+        },
+
+        openCloseSeenBox(){
+            this.seenBoxOpen = !this.seenBoxOpen
+        },
+
+        testValue(){
+            alert('click')
         }
 
     }
@@ -420,15 +449,31 @@ export default {
 }
 
 
-.comment-cover{
-    background-color: wheat;
+.wrapper-left-comment{
     display: flex;
-    align-items: center;
-    padding: 10px;
+    padding: 2px;
+    background-color: wheat;
 
     &:hover{
         background-color: #959595;    
         cursor: pointer;
+    }
+}
+
+
+.comment-cover{
+    text-align: start;
+
+
+    .left-comment-cover{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-grow: 3;
+
+        .user-comment{
+            height: 100%;
+        }
     }
 
 
@@ -444,13 +489,24 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         margin-left: 10px;
-        flex: 1;
+        width: 90%;
+
+        .comment-name{
+            color:#1565C0;
+            font-weight: bold;
+        }
+
+        .comment-function{
+            margin-top: 10px;
+        }
     }
 
-    .comment-function{
-        display: inline-block;
-        background-color: red;
+    .love-comment{
+        display: flex;
+        align-items: center;
     }
+
+ 
 }
 
 </style>

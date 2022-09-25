@@ -10,7 +10,8 @@ export default {
     props: ['widthBox', 'heightBox', 'contentBox','shareBoxOpen', 'seenBoxOpen'],
     data() {
         return {
-            dataBoxOpen: this.shareBoxOpen
+            dataBoxOpen: this.shareBoxOpen,
+            dataSeenBoxOpen: this.seenBoxOpen
         }
     },
     computed:{
@@ -31,10 +32,20 @@ export default {
             this.$emit('close-share-box', this.dataBoxOpen)
         })
 
+       },
+
+       seenBoxState(){      
+            let element = document.getElementsByClassName('close-seen-box')[0]
+
+            element.addEventListener('click', () =>{
+                this.dataSeenBoxOpen = false
+                this.$emit('close-seen-box', this.dataSeenBoxOpen)
+            })
        }
     },
     mounted() {
        this.shareBoxState()
+       this.seenBoxState()
     }
 
 }
