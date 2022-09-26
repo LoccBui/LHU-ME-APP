@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="post-box-user">
-                        <span class="post-user" v-html="SourceName"></span>
+                        <span class="post-user" v-html="SourceName" @click="openCloseInfoBox()" ></span>
                         <span class="post-time">2 giờ trước</span>
                     </div>
                 </div>
@@ -80,29 +80,21 @@
                                 <span class="comment-content">{{comment.CommentText}}</span>      
 
                                 <div class="comment-function">         
-                                    <span>1 gio truoc </span>                            
-                                    <span>1 luot thich</span>                            
-                                    <span>Tra loi</span>                                      
+                                    <a href="#" class="comment-time">1 gio truoc </a>                            
+                                    <a href="#" class="comment-love">1 luot thich</a>                            
+                                    <a href="#" class="comment-response">Tra loi</a>     
                                 </div>
                             </div>                            
                         </div>
 
                         <div class="love-comment" @click="testValue()" >
                             <img  src="https://img.icons8.com/material-outlined/20/000000/filled-like.png" alt="Love Comment Icon">
-                        </div> 
-
-                        
+                        </div>                         
                     </div>
-                    
 
-                   
-
-                       <!-- <span class="commnent-time">{{comment.CreateTime}} </span>       -->
-                          
+                
                 </div>
 
-                <!-- <button @click="testValue()" >Click for test</button> -->
-                
             </div>
 
             <div class="post-new-comment">
@@ -115,15 +107,21 @@
 
             <!-- Drop down Box-->
             <div class="drop-down-menu">
-                <Box v-if="postMenuDropDown" :widthBox="'300px'" :heightBox="'auto'" :contentBox="postDropDownMenu()" />
+                <Box v-if="postMenuDropDown" 
+                :widthBox="'300px'" 
+                :heightBox="'auto'" 
+                :contentBox="postDropDownMenu()" />
             </div>
 
         </div>
 
             <!-- Share Box -->
         <div class="sharing-box">
-            <Box v-if="shareBoxOpen" :widthBox="'500px'" :heightBox="'auto'" :contentBox="shareBoxContent()"  
-            :shareBoxOpen="shareBoxOpen"
+            <Box v-if="shareBoxOpen" 
+                :widthBox="'500px'"
+                :heightBox="'auto'" 
+                :contentBox="shareBoxContent()"  
+                :dataBoxOpen="shareBoxOpen"
             @close-share-box="openCloseShareBox()"/>
         </div>
 
@@ -132,9 +130,21 @@
             <Box v-if="seenBoxOpen" 
             :widthBox="'500px'"
             :heightBox="'auto'" 
-            :seenBoxOpen="seenBoxOpen"
+            :dataBoxOpen="seenBoxOpen"
             :contentBox="seenBoxContent()" 
             @close-seen-box="openCloseSeenBox()"/>
+        </div>
+
+        <!-- Info User Post Box -->
+        <div class="info-user-post">
+            <Box 
+                v-if="infoUserBoxOpen"
+                :widthBox="'600px'"
+                :heightBox="'auto'" 
+                :contentBox="infoUserPostContent()"
+                :dataBoxOpen="infoUserBoxOpen"
+                @close-info-box="openCloseInfoBox()"
+            />
         </div>
 
         
@@ -153,6 +163,7 @@ export default {
             postMenuDropDown: false,
             shareBoxOpen: false,
             seenBoxOpen: false,
+            infoUserBoxOpen: false,
             content: '',
             numberLiked: '',
             NumberComment: '',
@@ -213,12 +224,13 @@ export default {
 
         openCloseShareBox(){ 
             this.shareBoxOpen = !this.shareBoxOpen
+            this.enableScroll()
         },
 
         shareBoxContent(){
             return `
                <div class="overlay">
-                    <div class="post-share-box">
+                    <div class="cover-box">
                     
                     <div class="header-box">
                         <h3>Chia sẻ bài viết này</h3>
@@ -245,10 +257,11 @@ export default {
             `      
         },
 
+        // Seen Box
         seenBoxContent() {
             return `
             <div class="overlay">
-                <div class="post-seen-box">
+                <div class="cover-box">
 
                     <div class="header-box">
                         <h3>Những người đã xem bài viết</h3>
@@ -283,10 +296,51 @@ export default {
 
         openCloseSeenBox(){
             this.seenBoxOpen = !this.seenBoxOpen
+            this.enableScroll()
+        },
+        
+        // Info user box
+        infoUserPostContent(){
+            return`
+                    <div class="overlay" >
+                        <div class="cover-box">
+
+                            <div class="header-box">                
+                                <h3>Thông tin người dùng</h3>
+                                <div class="close-seen-box" >
+                                    <img src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png" class="close-icon">    
+                                </div>
+                            </div>
+
+                            
+                            <div class="info-user-body">
+
+                                <div class="info-user-img-cover" >
+                                    <img class="info-user-img" src="https://file.lhu.edu.vn/me/avatarorigin/NV00000371.jpg ">
+                                </div>
+                                
+                                <div class="info-user-detail">
+                                    <span class="info-user-name">Nguyễn Vũ Quỳnh - Jimmy_Nguyen</span>
+                                    <span class="info-user-email">nguyen_vuquynh@yahoo.com</span>
+                                    <button @click="abc" class="btn-add-info-user">Kết bạn</button>
+                                </div>
+
+                            </div>
+                    </div>
+                `
         },
 
-        testValue(){
-            alert('click')
+        openCloseInfoBox(){
+            this.infoUserBoxOpen = !this.infoUserBoxOpen
+            this.enableScroll()
+        },
+
+        enableScroll(){
+            var scroll = document.body.style.overflow 
+
+            if (scroll === "hidden"){
+                document.body.style.overflow = ""
+            }
         }
 
     }
@@ -336,6 +390,10 @@ export default {
             .post-user{
                 color: #1565C0;
                 cursor: pointer;
+
+                &:hover{
+                    text-decoration: underline;
+                }
             }
 
             .sharedUser{
@@ -421,6 +479,7 @@ export default {
 
 .post-new-comment{
     display: flex;
+    align-items: center;
     padding: 20px 0 0;
 
     .avatar-post{
@@ -432,13 +491,15 @@ export default {
             vertical-align: middle;
         }
     }
-    
+
     .input-new-comment{
         flex: 1;
+        padding: 10px;
         margin-left: 10px;
         text-indent: 10px; //margin placeholder
         border-radius: 20px;
         border: thin solid rgba(84, 84, 87, 0.25);   
+
 
         &:focus{
             border: thin solid rgba(84, 84, 87, 0.25);   
@@ -452,10 +513,9 @@ export default {
 .wrapper-left-comment{
     display: flex;
     padding: 2px;
-    background-color: wheat;
+    background-color: wheat;    
 
     &:hover{
-        background-color: #959595;    
         cursor: pointer;
     }
 }
@@ -498,7 +558,23 @@ export default {
 
         .comment-function{
             margin-top: 10px;
+
+            .comment-time,
+            .comment-love,
+            .comment-response {
+                color: #959595;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .comment-response{
+                margin-left: 10px;
+            }
+
         }
+
+       
+           
     }
 
     .love-comment{

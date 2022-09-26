@@ -7,11 +7,10 @@
 <script>
 export default {
     name: 'Box',
-    props: ['widthBox', 'heightBox', 'contentBox','shareBoxOpen', 'seenBoxOpen'],
+    props: ['widthBox', 'heightBox', 'contentBox','dataBoxOpen'],
     data() {
         return {
-            dataBoxOpen: this.shareBoxOpen,
-            dataSeenBoxOpen: this.seenBoxOpen
+            dataOpenBox: this.dataBoxOpen,
         }
     },
     computed:{
@@ -24,28 +23,42 @@ export default {
         
     },
     methods:{
-       shareBoxState(){
-        let element = document.getElementsByClassName('close-icon')[0]
-
-        element.addEventListener('click', () =>{
-            this.dataBoxOpen = false
-            this.$emit('close-share-box', this.dataBoxOpen)
-        })
-
-       },
-
-       seenBoxState(){      
-            let element = document.getElementsByClassName('close-seen-box')[0]
+        closeBox(eventEmit) {
+            let element = document.getElementsByClassName('close-icon')[0]
 
             element.addEventListener('click', () =>{
-                this.dataSeenBoxOpen = false
-                this.$emit('close-seen-box', this.dataSeenBoxOpen)
+                this.dataOpenBox = false
+                this.$emit(`${eventEmit}`, this.dataOpenBox)
             })
-       }
+        },
+        
+        preventScroll(){
+            var scroll = document.body.style.overflow 
+            if(scroll === ""){
+                document.body.style.overflow = "hidden"
+            }
+        },
+
+        shareBoxState(){
+                this.closeBox('close-share-box')
+                this.preventScroll()
+        },
+
+        seenBoxState(){      
+                this.closeBox('close-seen-box')
+                this.preventScroll()
+        },
+
+        infoUserBoxState(){
+            this.closeBox('close-info-box')
+            this.preventScroll()
+        }
+
     },
     mounted() {
        this.shareBoxState()
        this.seenBoxState()
+       this.infoUserBoxState()
     }
 
 }
@@ -117,7 +130,7 @@ export default {
 }
 
 
-.post-share-box{
+.cover-box{
     position: relative;
     z-index: 2;
     width: var(--widthBox);
@@ -128,13 +141,6 @@ export default {
     transform: translate(-50%, -50%);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     z-index: 1000;
-
-
-    .header-box{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 
 
     .input-share{
@@ -153,25 +159,11 @@ export default {
 
 
 // Seen Post Box
-.post-seen-box{
-    width: var(--widthBox);
-    height: var(--heightBox);
-    z-index: 100;
-    background-color: white;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 10px;
-    z-index: 1000;
-    overflow: hidden;
 
-    .header-box{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.header-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .avatar-self{
@@ -187,17 +179,58 @@ export default {
     background-color: #248fc1;
     padding: 10px;
 
-
-    .user-seen-avatar{
-
-    }
-
     .user-seen-info{
         display: flex;
         flex-direction: column;
         text-align: start;
         margin-left: 10px;
     }   
+}
+
+
+// Info User Post Box
+
+.info-user-body{
+    display: flex;
+    align-items: center;
+
+    .info-user-img-cover{
+
+        .info-user-img{
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+        }
+    }
+
+    .info-user-detail{
+        height: 200px;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 20px;
+        
+        .info-user-name{
+            font-size: 20px;
+            font-weight: 600;
+            color:#248fc1;
+
+        }
+
+        .btn-add-info-user{
+            width: 100%;
+            border-radius: 20px;
+            padding: 10px;
+            background-color: #248fc1;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    }
 }
 
 </style>
