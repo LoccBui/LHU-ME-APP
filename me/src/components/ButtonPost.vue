@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <button class="btn" @click="actionButton()" >
-        <img :src="sourceImage" />       
+        <img 
+            class="post-function-icon"
+            :src="sourceImage"
+            alt="Image" 
+        />       
         <span class="numberPost"> {{dataButton}} </span>
     </button>
   </div>
@@ -70,5 +74,11 @@ export default {
         margin-left: 5px;
     }
 
+}
+
+
+.post-function-icon{
+    width: 20px;
+    height: 20px;
 }
 </style>

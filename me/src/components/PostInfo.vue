@@ -24,13 +24,17 @@
             </div>
 
             <div v-html="content" class="main-post"> </div>
+            <button @click="comment()">Click show comment</button>
+
+            <!-- Import IMG -->
+            <!-- <img style="width: 48px;" :src="`${icon_warning}`" alt="ok"  />  -->
+
 
             <div class="wrap-image">
                 <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
 
                     <img class="img-attach" alt="File" 
-                        :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`" 
-                    />
+                        :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"/>
                 </div>
             </div>
 
@@ -40,22 +44,34 @@
             </div>
 
             <div class="post-function">
-                <ButtonPost :dataButton="numberLiked"  :srcImg="'https://img.icons8.com/material-outlined/20/000000/filled-like.png'" :type="'love'  "/>
-
-                <ButtonPost @focus-input-new-comment="focusInputCommnent()" :dataButton="NumberComment" :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/comments--v2.png'" :type="'comment'  "/>
-
-                <ButtonPost      
-                :dataButton="NumberShared"
-                @click.native="openCloseShareBox()" 
-                :srcImg="'https://img.icons8.com/fluency-systems-regular/20/000000/share.png'" :type="'share' " />
+                <ButtonPost 
+                    :dataButton="numberLiked"  
+                    :srcImg="`${icon_noneHeart}`" 
+                    :type="'love'  
+                "/>
 
                 <ButtonPost 
-                @click.native="openCloseSeenBox()"
-                :dataButton="NumberView" :srcImg="'https://img.icons8.com/external-creatype-filed-outline-colourcreatype/20/000000/external-eyes-basic-creatype-filed-outline-colourcreatype-3.png'"  :type="'see'" />
+                    @focus-input-new-comment="focusInputCommnent()" 
+                    :dataButton="NumberComment" 
+                    :srcImg="`${icon_comment}`" :type="'comment'  
+                "/>
+
+                <ButtonPost      
+                    :dataButton="NumberShared"
+                    @click.native="openCloseShareBox()" 
+                    :srcImg="`${icon_share}`"
+                    :type="'share'
+                  "/>
+
+                <ButtonPost 
+                    @click.native="openCloseSeenBox()"
+                    :dataButton="NumberView" 
+                    :srcImg="`${icon_closeEyes}`"
+                    :type="'see'
+                "/>
             </div>
 
             <div class="post-action-like-info" >
-                <img src="https://img.icons8.com/fluency/20/000000/facebook-like.png"/>
                 <div class="number-like-info" v-html="UserLike"></div>
             </div>
 
@@ -91,7 +107,6 @@
                             <img  src="https://img.icons8.com/material-outlined/20/000000/filled-like.png" alt="Love Comment Icon">
                         </div>                         
                     </div>
-
                 
                 </div>
 
@@ -122,7 +137,7 @@
                 :heightBox="'auto'" 
                 :contentBox="shareBoxContent()"  
                 :dataBoxOpen="shareBoxOpen"
-            @close-share-box="openCloseShareBox()"/>
+                @close-share-box="openCloseShareBox()"/>
         </div>
 
         <!-- Seen Post -->
@@ -146,14 +161,15 @@
                 @close-info-box="openCloseInfoBox()"
             />
         </div>
-
-        
+      
     </div>
 </template>
 
 <script>
 import ButtonPost from './ButtonPost.vue';
 import Box from './Box.vue';
+import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes} from '../assets/img/Image'
+
 export default {
     name: "PostInfo",
     props: ["dataPostAPI"],
@@ -175,9 +191,18 @@ export default {
             Avatar: '',
             CommentJsonString: [],
             AttachJsonString: [],
+            subComment: '',
 
+            // icon
+            icon_noneHeart: ic_noneHeart,
+            icon_comment: ic_comment,
+            icon_share: ic_share,
+            icon_closeEyes: ic_closeEyes,
         }
     },
+    mounted(){
+        console.log(this.warn)
+    },  
 
     created(){
        if(this.dataPostAPI !== null){
@@ -187,8 +212,16 @@ export default {
        else{
             console.log("Can get API")
        }
+       this.keyPressClose()
     },
     methods:{
+        comment(){
+            const array = [this.subComment]
+           console.log(typeof array)
+           console.log(array)
+           console.log(array)
+        },  
+
         handlePostAPI(data){
             this.content = data.Contents   
             this.numberLiked = data.NumberLike
@@ -201,7 +234,7 @@ export default {
             this.Avatar = data.Avatar
             this.CommentJsonString = JSON.parse(data.CommentJsonString)
             this.AttachJsonString = JSON.parse(data.AttachJsonString)
-
+            this.subComment = [] || data.CommentJsonString
         },
         
         focusInputCommnent(){
@@ -211,15 +244,40 @@ export default {
         postDropDownMenu(){
             return `
                 <div class="post-menu">
-                    <h5 class="post-menu-item">Không nhận thông báo</h5>
-                    <h5 class="post-menu-item">Báo cáo vi phạm</h5>
-                    <h5 class="post-menu-item">Sao chép bài viết</h5>
+                    <h5 class="post-menu-item ">
+                        <div class="drop-down-icon">
+                            <img src="https://img.icons8.com/ios/18/000000/appointment-reminders--v1.png"/>
+                        </div>
+                        Không nhận thông báo
+                    </h5>
+                    <h5 class="post-menu-item">
+                        <div class="drop-down-icon">
+                            <img src="https://img.icons8.com/material-rounded/18/000000/copy.png"/>
+                        </div>
+                        Sao chép bài viết
+                    </h5>
+                    <h5 class="post-menu-item">
+                        <div class="drop-down-icon">
+                            <img src="https://img.icons8.com/ios-glyphs/20/000000/error--v1.png"/>
+                        </div>
+                        Báo cáo vi phạm
+                    </h5>
                 </div>
-            `      
+                        `      
         },
 
         showDropDownMenu(){
             this.postMenuDropDown = !this.postMenuDropDown
+        },
+
+        // Not use Yet: To close box
+        keyPressClose () {
+            document.onkeydown = function(e) {
+                 e = e || window.event;
+                if (e.key == "Escape") {
+                   
+                }
+            };
         },
 
         openCloseShareBox(){ 
@@ -373,7 +431,6 @@ export default {
     .user-box{
         display: flex;
 
-
         .avatar-self{
             width: 40px;
             height: 40px;
@@ -403,8 +460,6 @@ export default {
     }
 
     .post-expand{
-
-    
         .arrow-expand:hover{
             cursor: pointer;
         }
@@ -423,7 +478,6 @@ export default {
     border: thin solid rgba(84, 84, 87, 0.25);   
     overflow: hidden;
     padding: 20px 0;
-
 
     .url-img-large  img{
         width: 100%;
@@ -448,6 +502,7 @@ export default {
     padding: 10px 0;
     border: thin solid rgba(84, 84, 87, 0.25);   
     overflow: hidden;
+
 }
 
 .post-action-like-info{

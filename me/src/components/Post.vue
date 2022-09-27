@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="loading" v-if="loading">
-      <img class="icon-loading" src="../assets/img/gif/icon_spinner.gif" alt="Loading">
+      <img class="icon-loading" src="../assets/gif/icon_spinner.gif" alt="Loading">
     </div>
 
     <div v-else class="post-container" >
@@ -12,11 +12,8 @@
       </div>          
     </div>
 
-
   </div>
 
- 
- 
 </template>
 
 <script>
@@ -29,8 +26,11 @@ export default {
     data(){
       return{
           dataPostAPI: null,
-          loading: true
+          loading: true,
       }
+    },
+    mounted() {
+        // alert(this.imga)
     },
     created(){
       try {

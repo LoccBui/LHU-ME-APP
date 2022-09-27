@@ -68,7 +68,6 @@ export default {
 #box-container{
     width: var(--widthBox);
     height: var(--heightBox);
-    z-index: 1000;
 }
 
 .post-menu{
@@ -76,26 +75,43 @@ export default {
     top: 60px;
     right: 10px;
     background-color: white;
-    z-index: 100;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 15px;
+    border-radius: 12px;
+    overflow: visible;
+    z-index: 10;
     
-
     .post-menu-item{
         margin: 0px;
         padding: 10px;
+        display: flex;
+        align-items: center;
+        background-color: inherit;
 
         &:hover{
             color: white;
             background-color: #248fc1;
             cursor: pointer;
         }
+
+        &:first-child{
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+        }
+
+        &:last-child{
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+        
+        .drop-down-icon{
+            width: 50px;
+        }
     }
 
     &::before{
         content: "";
         position: absolute;
-        right: -8px;
+        right: -6px;
         width: 0;
         height: 0;
         border: 8px solid black;
@@ -103,6 +119,7 @@ export default {
         transform-origin: 0 0;
         transform: rotate(135deg);    
         box-shadow: -1px 2px 5px 0 rgba(0, 0, 0, 0.24);
+        z-index: -1;
     }
 
     &::after{
@@ -112,7 +129,9 @@ export default {
         right: 0;
         top: -15px;
         width: 100%;
+        z-index: -1;
         height: 15px;
+        z-index: -1;
     }
 
 }
@@ -170,7 +189,7 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    vertical-align: middle;
+    object-fit: cover;
 }
 
 .list-seen{

@@ -129,6 +129,15 @@
             "AttachJsonString": "[{\"FileID\":526393,\"FileName\":\"z3745072114189 6850fe6fa43899d88fe6662844084c56.jpg\",\"isImage\":true,\"Capacity\":313678,\"Saved\":0},{\"FileID\":526394,\"FileName\":\"z3745072252459 6ed17d5b586f177d3069d4c93d764a5c.jpg\",\"isImage\":true,\"Capacity\":386940,\"Saved\":0},{\"FileID\":526395,\"FileName\":\"z3745072461387 58cc2bb8b81d927bd813779578c7cbe0.jpg\",\"isImage\":true,\"Capacity\":198590,\"Saved\":0}]",
             "NumberSubComm": 1,
             "NotShared": 0
+        },
+
+        {
+            "UserName": "thutrang28",
+            "FullName": "Bùi Thị Thu Trang",
+            "GroupName": " Khoa Công nghệ thông tin [KCT]",
+            "UserInfo": "",
+            "Email": "thutrang@lhu.edu.vn",
+            "FriendStatus": 0
         }
     ]
 }   
