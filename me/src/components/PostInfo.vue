@@ -123,7 +123,7 @@
                 <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." />
 
                 <div>
-                    <img class="comment-icon-attach" :src="`${icon_attacch}`" alt="Attach File" @click="test()" />
+                    <img class="comment-icon-attach" :src="`${icon_attacch}`" alt="Attach File"  @click="openCloseUploadBox()"  />
                 </div>
             </div>
 
@@ -140,6 +140,7 @@
             <!-- Share Box -->
         <div class="sharing-box">
             <Box v-if="shareBoxOpen" 
+                type="shareBox"
                 :widthBox="'500px'"
                 :heightBox="'auto'" 
                 :contentBox="shareBoxContent()"  
@@ -150,6 +151,7 @@
         <!-- Seen Post -->
         <div class="seen-box">
             <Box v-if="seenBoxOpen" 
+            type="seenBox"
             :widthBox="'500px'"
             :heightBox="'auto'" 
             :dataBoxOpen="seenBoxOpen"
@@ -159,8 +161,8 @@
 
         <!-- Info User Post Box -->
         <div class="info-user-post">
-            <Box 
-                v-if="infoUserBoxOpen"
+            <Box v-if="infoUserBoxOpen"
+                type="infoUserBox"
                 :widthBox="'600px'"
                 :heightBox="'auto'" 
                 :contentBox="infoUserPostContent()"
@@ -172,10 +174,16 @@
         <!-- File Upload Box -->
         <div class="file-upload-box">
             <Box 
+            v-if="uploadFileOpen"
+            type="uploadFileBox"
             @file-name="test"
             :widthBox="'500px'"
             :heightBox="'auto'" 
-            :contentBox="uploadFileContent()" />
+            :contentBox="uploadFileContent()"
+            :dataBoxOpen="uploadFileOpen"
+            @close-upload-box="openCloseUploadBox()"
+            
+            />
         </div>
 
       
@@ -197,6 +205,7 @@ export default {
             shareBoxOpen: false,
             seenBoxOpen: false,
             infoUserBoxOpen: false,
+            uploadFileOpen: false,
             content: '',
             numberLiked: '',
             NumberComment: '',
@@ -427,6 +436,12 @@ export default {
 
 
         // File Upload Box
+        openCloseUploadBox(){
+            this.uploadFileOpen = !this.uploadFileOpen
+            this.enableScroll()
+        },
+
+
         uploadFileContent(){
             return `
             <div class="overlay" >
@@ -442,8 +457,9 @@ export default {
 
                         <div class="upload-file-body">
                             <form action="#">
+                                <p>Icon</p>
                                 <label for="file-input">
-                                    <img src="${this.icon_upload}" for="file" />
+                                    <img src="${this.icon_upload}" class="icon-upload-file" />
                                 </label>
                                 <input style="display:block;" id="file-input" type="file" multiple required/>
                             </form>

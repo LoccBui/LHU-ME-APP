@@ -7,12 +7,10 @@
 <script>
 export default {
     name: 'Box',
-    props: ['widthBox', 'heightBox', 'contentBox','dataBoxOpen'],
+    props: ['widthBox', 'heightBox', 'contentBox','dataBoxOpen', 'type'],
     data() {
         return {
             dataOpenBox: this.dataBoxOpen,
-            imgtest: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2SYykGGnKIMy_SEvwEWz8FFcZHh2FyEKqbg&usqp=CAU'
-
         }
     },
     computed:{
@@ -49,6 +47,8 @@ export default {
         seenBoxState(){      
             this.closeBox('close-seen-box')
             this.preventScroll()
+
+
         },
 
         infoUserBoxState(){
@@ -56,37 +56,33 @@ export default {
             this.preventScroll()
         },
 
-        listenUploadFile(){
-            const fileUploader = document.getElementById('file-input');
-            const reader = new FileReader();
-            const imageGrid = document.getElementById('detail-upload-render')
-            const nameFile = document.getElementsByClassName('file-name')
+        uploadFileBoxState(){
+            this.closeBox('close-upload-box')
+            this.preventScroll()
+        },
 
-            fileUploader.addEventListener('change', (event) => {
-            const files = event.target.files;
-            const file = files[0];
-            const fileName = files[0].name;
+        checkBoxType(){
+            switch(this.type){ 
+                case 'shareBox':
+                    this.shareBoxState()
+                    break;
+                case 'seenBox': 
+                    this.seenBoxState()
+                    break;
 
-            reader.readAsDataURL(file);
-            
-            reader.addEventListener('load', (event) => {
-                const img = document.createElement('img');
-                imageGrid.appendChild(img)
-                img.src = event.target.result;
-                img.alt = file.name;
+                case 'infoUserBox': 
+                    this.infoUserBoxState()
+                    break;
 
-                this.$emit('file-name', fileName)
-                
-            });
-            });
+                case 'uploadFileBox':
+                    this.uploadFileBoxState()
+                    break;
+            }
         }
 
     },
     mounted() {
-       this.shareBoxState()
-       this.seenBoxState()
-       this.infoUserBoxState()
-       this.listenUploadFile()
+        this.checkBoxType();
     }
 
 }
