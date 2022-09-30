@@ -24,10 +24,13 @@
             </div>
 
             <div v-html="content" class="main-post"> </div>
-            <button @click="comment()">Click show comment</button>
+            <p>icon</p>
+            
+            <!-- <div v-for="(item, index)  of testSubCom" :key="index">   
+                {{item.concat('')}}
+            </div> -->
 
-            <!-- Import IMG -->
-            <!-- <img style="width: 48px;" :src="`${icon_warning}`" alt="ok"  />  -->
+            <p>{{testSubCom}}</p>
 
 
             <div class="wrap-image">
@@ -93,18 +96,18 @@
                 
                             <div class="comment-box">
                                 <span class="comment-name">{{comment.SourceName}}</span>
-                                <span class="comment-content">{{comment.CommentText}}</span>      
+                                <span v-html="comment.CommentText" class="comment-content"></span>      
 
                                 <div class="comment-function">         
-                                    <a href="#" class="comment-time">1 gio truoc </a>                            
-                                    <a href="#" class="comment-love">1 luot thich</a>                            
-                                    <a href="#" class="comment-response">Tra loi</a>     
+                                    <a href="#" class="comment-time">1 giờ trước </a>                            
+                                    <a href="#" class="comment-love">1 lượt thích</a>                            
+                                    <a href="#" class="comment-response">Trả lời</a>     
                                 </div>
                             </div>                            
                         </div>
 
                         <div class="love-comment" @click="testValue()" >
-                            <img  src="https://img.icons8.com/material-outlined/20/000000/filled-like.png" alt="Love Comment Icon">
+                            <img class="post-function-icon" :src="`${icon_noneHeart}`" alt="Love Comment Icon">
                         </div>                         
                     </div>
                 
@@ -117,7 +120,11 @@
                     <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self">
                 </div>
 
-                <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." >
+                <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." />
+
+                <div>
+                    <img class="comment-icon-attach" :src="`${icon_attacch}`" alt="Attach File" @click="test()" />
+                </div>
             </div>
 
             <!-- Drop down Box-->
@@ -161,6 +168,16 @@
                 @close-info-box="openCloseInfoBox()"
             />
         </div>
+
+        <!-- File Upload Box -->
+        <div class="file-upload-box">
+            <Box 
+            @file-name="test"
+            :widthBox="'500px'"
+            :heightBox="'auto'" 
+            :contentBox="uploadFileContent()" />
+        </div>
+
       
     </div>
 </template>
@@ -168,7 +185,7 @@
 <script>
 import ButtonPost from './ButtonPost.vue';
 import Box from './Box.vue';
-import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes} from '../assets/img/Image'
+import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_upload} from '../assets/img/Image'
 
 export default {
     name: "PostInfo",
@@ -198,6 +215,12 @@ export default {
             icon_comment: ic_comment,
             icon_share: ic_share,
             icon_closeEyes: ic_closeEyes,
+            icon_attacch: ic_attach,
+            icon_upload: ic_upload,
+
+            // test
+            testSubCom: '',
+            nameFile: ''
         }
     },
     mounted(){
@@ -214,13 +237,12 @@ export default {
        }
        this.keyPressClose()
     },
-    methods:{
-        comment(){
-            const array = [this.subComment]
-           console.log(typeof array)
-           console.log(array)
-           console.log(array)
-        },  
+    methods:{ 
+        test(value) {
+            console.log("run")
+            console.log(value)
+            this.nameFile = value
+        },
 
         handlePostAPI(data){
             this.content = data.Contents   
@@ -234,7 +256,9 @@ export default {
             this.Avatar = data.Avatar
             this.CommentJsonString = JSON.parse(data.CommentJsonString)
             this.AttachJsonString = JSON.parse(data.AttachJsonString)
-            this.subComment = [] || data.CommentJsonString
+
+
+            this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm[0].CommentText
         },
         
         focusInputCommnent(){
@@ -246,7 +270,7 @@ export default {
                 <div class="post-menu">
                     <h5 class="post-menu-item ">
                         <div class="drop-down-icon">
-                            <img src="https://img.icons8.com/ios/18/000000/appointment-reminders--v1.png"/>
+                            <img class="abc" src="https://img.icons8.com/ios/18/000000/appointment-reminders--v1.png"/>
                         </div>
                         Không nhận thông báo
                     </h5>
@@ -399,6 +423,62 @@ export default {
             if (scroll === "hidden"){
                 document.body.style.overflow = ""
             }
+        },
+
+
+        // File Upload Box
+        uploadFileContent(){
+            return `
+            <div class="overlay" >
+                
+                    <div class="cover-box">
+                        <div class="header-box">                
+                            <h3> Tải lên file</h3>
+                            <div class="close-seen-box" >
+                                <img src="https://img.icons8.com/fluency-systems-regular/20/000000/x.png" class="close-icon">    
+                            </div>
+                        </div>
+
+
+                        <div class="upload-file-body">
+                            <form action="#">
+                                <label for="file-input">
+                                    <img src="${this.icon_upload}" for="file" />
+                                </label>
+                                <input style="display:block;" id="file-input" type="file" multiple required/>
+                            </form>
+
+                            Tải file lên 
+
+                            <div id="detail-upload-render">
+                                    
+                            </div>
+                        </div>
+
+                        <div class="progress-file-area">
+                            <div class="detail-progress">
+                                <span class="file-name">${this.nameFile}</span>
+                                <span>Uploading</span>    
+                            </div>
+
+
+                            <div class="detail-progress">
+                                <span>1.png</span>
+                                <span>Uploading</span>    
+                            </div>
+
+
+                            <div class="detail-progress">
+                                <span>1.png</span>
+                                <span>Uploading</span>    
+                            </div>
+
+                        </div>
+                            
+                        
+
+            </div>
+            `
         }
 
     }
@@ -446,11 +526,10 @@ export default {
 
             .post-user{
                 color: #1565C0;
-                cursor: pointer;
-
+                cursor: pointer;        
                 &:hover{
                     text-decoration: underline;
-                }
+                }       
             }
 
             .sharedUser{
@@ -533,6 +612,7 @@ export default {
 }
 
 .post-new-comment{
+    position: relative;
     display: flex;
     align-items: center;
     padding: 20px 0 0;
@@ -559,6 +639,17 @@ export default {
         &:focus{
             border: thin solid rgba(84, 84, 87, 0.25);   
             outline: none;
+        }
+    }
+
+    .comment-icon-attach{
+        position: absolute;
+        width: 20px;
+        right: 0;
+        transform: translate(-50%, -50%);
+
+        &:hover{
+            cursor: pointer;
         }
     }
 
@@ -635,6 +726,12 @@ export default {
     .love-comment{
         display: flex;
         align-items: center;
+
+
+        .post-function-icon{
+            width: 20px;
+            height: 20px;
+        }
     }
 
  

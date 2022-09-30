@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import {ic_openEyes, ic_love, ic_noneHeart} from '../assets/img/Image'
+
+
 export default {
     name: "ButtonPost",
     props: ['srcImg', 'type', 'dataButton'],
@@ -19,18 +22,21 @@ export default {
         return{
             sourceImage: this.srcImg,
             typeBtn: this.type,
+            icon_openEyes: ic_openEyes,
+            icon_love: ic_love,
+            icon_noneHeart: ic_noneHeart,
         }
     },
     
     methods: {
         actionButton(){
             if(this.typeBtn === 'love'){
-                this.sourceImage = 'https://img.icons8.com/color/20/000000/filled-like.png'
+                this.sourceImage = `${this.icon_love}`
                 this.typeBtn = "loved"
                 this.dataButton++
             }
             else if(this.typeBtn === 'loved') {
-                this.sourceImage = 'https://img.icons8.com/material-outlined/20/000000/filled-like.png'
+                this.sourceImage = `${this.icon_noneHeart}`
                 this.typeBtn = "love"
                 this.dataButton--
             }
@@ -43,7 +49,7 @@ export default {
             }
 
             if(this.typeBtn === 'see'){
-                this.sourceImage = 'https://img.icons8.com/sf-regular/19/000000/visible.png'
+                this.sourceImage = `${this.icon_openEyes}`
                 this.typeBtn = "saw"
                 this.dataButton++
             }

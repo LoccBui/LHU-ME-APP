@@ -11,6 +11,8 @@ export default {
     data() {
         return {
             dataOpenBox: this.dataBoxOpen,
+            imgtest: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2SYykGGnKIMy_SEvwEWz8FFcZHh2FyEKqbg&usqp=CAU'
+
         }
     },
     computed:{
@@ -40,18 +42,43 @@ export default {
         },
 
         shareBoxState(){
-                this.closeBox('close-share-box')
-                this.preventScroll()
+            this.closeBox('close-share-box')
+            this.preventScroll()
         },
 
         seenBoxState(){      
-                this.closeBox('close-seen-box')
-                this.preventScroll()
+            this.closeBox('close-seen-box')
+            this.preventScroll()
         },
 
         infoUserBoxState(){
             this.closeBox('close-info-box')
             this.preventScroll()
+        },
+
+        listenUploadFile(){
+            const fileUploader = document.getElementById('file-input');
+            const reader = new FileReader();
+            const imageGrid = document.getElementById('detail-upload-render')
+            const nameFile = document.getElementsByClassName('file-name')
+
+            fileUploader.addEventListener('change', (event) => {
+            const files = event.target.files;
+            const file = files[0];
+            const fileName = files[0].name;
+
+            reader.readAsDataURL(file);
+            
+            reader.addEventListener('load', (event) => {
+                const img = document.createElement('img');
+                imageGrid.appendChild(img)
+                img.src = event.target.result;
+                img.alt = file.name;
+
+                this.$emit('file-name', fileName)
+                
+            });
+            });
         }
 
     },
@@ -59,6 +86,7 @@ export default {
        this.shareBoxState()
        this.seenBoxState()
        this.infoUserBoxState()
+       this.listenUploadFile()
     }
 
 }
@@ -160,6 +188,8 @@ export default {
     transform: translate(-50%, -50%);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     z-index: 1000;
+    border-radius: 12px;
+    padding: 5px;
 
 
     .input-share{
@@ -252,4 +282,17 @@ export default {
     }
 }
 
+// Upload File
+.upload-file-body{
+    border: 3px dashed #1565C0;
+}
+
+.progress-file-area{
+
+    .detail-progress{
+     padding: 10px;
+        margin-top: 10px;
+        background-color: rgb(173, 161, 161);
+    }
+}
 </style>
