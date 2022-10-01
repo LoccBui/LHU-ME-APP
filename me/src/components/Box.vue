@@ -59,6 +59,30 @@ export default {
         uploadFileBoxState(){
             this.closeBox('close-upload-box')
             this.preventScroll()
+
+
+            // Upload file 
+            var a = document.querySelector('.btnIconText')
+            a.addEventListener('click', function() {
+                alert('clicked')
+            })
+
+            const fileUploader = document.getElementById('file-input')
+            console.log(fileUploader);
+
+            fileUploader.addEventListener('change', (event) => {
+                const files = event.target.files;
+                if(files && files.length > 0){
+                    console.log('[-]', files[0].name)
+                    console.log('[-]',files[0])
+                    console.log('emit file') 
+                    this.$emit('file-sending', files[0].name)   
+                }
+            });
+
+
+            
+           
         },
 
         checkBoxType(){
@@ -78,11 +102,11 @@ export default {
                     this.uploadFileBoxState()
                     break;
             }
-        }
+        },
 
     },
     mounted() {
-        this.checkBoxType();
+        this.checkBoxType();    
     }
 
 }

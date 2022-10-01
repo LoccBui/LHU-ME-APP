@@ -33,13 +33,15 @@ export default {
         // alert(this.imga)
     },
     created(){
-      try {
-        var url = 'http://localhost:3000/data'
-        axios.get(url)
-          .then(response => {
-              this.dataPostAPI = response.data;
-              this.loading = false
-          }) 
+      try {    
+        axios.post('/MessageHome_Select',{
+          "LastOrderTime": "9999-01-01"
+      })
+      .then(response => {
+          console.log(response.data)
+            this.dataPostAPI = response.data.data;
+            this.loading = false
+        }) 
       } catch (error) {
         console.log(error)
         this.loading= true

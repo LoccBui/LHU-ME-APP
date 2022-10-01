@@ -24,13 +24,14 @@
             </div>
 
             <div v-html="content" class="main-post"> </div>
-            <p>icon</p>
+            
+            
+
             
             <!-- <div v-for="(item, index)  of testSubCom" :key="index">   
                 {{item.concat('')}}
             </div> -->
 
-            <p>{{testSubCom}}</p>
 
 
             <div class="wrap-image">
@@ -176,13 +177,12 @@
             <Box 
             v-if="uploadFileOpen"
             type="uploadFileBox"
-            @file-name="test"
             :widthBox="'500px'"
             :heightBox="'auto'" 
             :contentBox="uploadFileContent()"
             :dataBoxOpen="uploadFileOpen"
             @close-upload-box="openCloseUploadBox()"
-            
+            @file-sending="fileSending"
             />
         </div>
 
@@ -210,6 +210,7 @@ export default {
             numberLiked: '',
             NumberComment: '',
             NumberShared: '',
+            NumberSubComm:'',
             NumberView: '',
             URLInfo: '',
             SourceName: '',
@@ -227,9 +228,14 @@ export default {
             icon_attacch: ic_attach,
             icon_upload: ic_upload,
 
+
+            // upload file
+            fileUpload: [],
+
             // test
             testSubCom: '',
-            nameFile: ''
+            nameFile: '',
+            
         }
     },
     mounted(){
@@ -247,8 +253,12 @@ export default {
        this.keyPressClose()
     },
     methods:{ 
-        test(value) {
-            console.log("run")
+        fileSending(value) {
+            console.log('method')
+
+            this.fileUpload.push(value)
+            console.log(this.fileUpload)
+
             console.log(value)
             this.nameFile = value
         },
@@ -259,6 +269,7 @@ export default {
             this.NumberComment = data.NumberComment
             this.NumberShared = data.NumberShared
             this.NumberView = data.NumberView
+            this.NumberSubComm = data.NumberSubComm
             this.URLInfo = data.URLInfo
             this.SourceName = data.SourceName
             this.UserLike= data.UserLike
@@ -267,7 +278,8 @@ export default {
             this.AttachJsonString = JSON.parse(data.AttachJsonString)
 
 
-            this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm[0].CommentText
+            this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm
+
         },
         
         focusInputCommnent(){
@@ -457,7 +469,7 @@ export default {
 
                         <div class="upload-file-body">
                             <form action="#">
-                                <p>Icon</p>
+                               
                                 <label for="file-input">
                                     <img src="${this.icon_upload}" class="icon-upload-file" />
                                 </label>
@@ -465,6 +477,7 @@ export default {
                             </form>
 
                             Tải file lên 
+                            <button class="btnIconText">Icon</button>
 
                             <div id="detail-upload-render">
                                     
@@ -474,18 +487,18 @@ export default {
                         <div class="progress-file-area">
                             <div class="detail-progress">
                                 <span class="file-name">${this.nameFile}</span>
+                                <span>Uploading</span>           
+                            </div>
+
+
+                            <div class="detail-progress">
+                                <span class="file-name">${this.nameFile}</span>
                                 <span>Uploading</span>    
                             </div>
 
 
                             <div class="detail-progress">
-                                <span>1.png</span>
-                                <span>Uploading</span>    
-                            </div>
-
-
-                            <div class="detail-progress">
-                                <span>1.png</span>
+                                <span class="file-name">${this.nameFile}</span>
                                 <span>Uploading</span>    
                             </div>
 
