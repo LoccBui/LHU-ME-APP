@@ -12,6 +12,8 @@
       </div>          
     </div>
 
+    <div v-if="dataPostAPI.length" v-observe-visibility="handleScrolledToBottom"></div>
+
   </div>
 
 </template>
@@ -25,30 +27,43 @@ export default {
     components: { PostInfo },
     data(){
       return{
-          dataPostAPI: null,
+          dataPostAPI: [],
           loading: true,
+          LastOrderTime: '9999-01-01',
+          newestOrderTime: ''
       }
     },
-    mounted() {
-        // alert(this.imga)
+    beforeMount() {
+       this.getAPIPost()
     },
-    created(){
-      try {    
+    
+   methods: {
+      getAPIPost(){
+        try {    
         axios.post('/MessageHome_Select',{
-          "LastOrderTime": "9999-01-01"
-      })
-      .then(response => {
-          console.log(response.data)
-            this.dataPostAPI = response.data.data;
-            this.loading = false
-        }) 
-      } catch (error) {
-        console.log(error)
-        this.loading= true
+          "LastOrderTime": `${this.LastOrderTime}`
+        })
+        .then(response => {
+              this.dataPostAPI.push(...response.data.data);
+              this.loading = false
+
+              this.newestOrderTime = this.dataPostAPI.slice(-1).pop().OrderTime
+          }) 
+        } catch (error) {
+          console.log(error)
+          this.loading= true
+        }
+      },
+
+
+      handleScrolledToBottom(isVisible){
+        if(!isVisible) { return }
+        if(this.OrderTime >= this.newestOrderTime ) {return}
+
+        this.LastOrderTime = this.newestOrderTime
+
+        this.getAPIPost()        
       }
-    },  
-    methods: {
-      
     }
 }
 </script>

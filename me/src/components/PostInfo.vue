@@ -239,7 +239,6 @@ export default {
         }
     },
     mounted(){
-        console.log(this.warn)
     },  
 
     created(){
@@ -278,7 +277,7 @@ export default {
             this.AttachJsonString = JSON.parse(data.AttachJsonString)
 
 
-            this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm
+            // this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm
 
         },
         
