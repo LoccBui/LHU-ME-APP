@@ -26,7 +26,7 @@
             <div v-html="content" class="main-post"> </div>
             
             
-
+            <h1>{{dataSeenPost.UserID}}</h1>
             
             <!-- <div v-for="(item, index)  of testSubCom" :key="index">   
                 {{item.concat('')}}
@@ -157,7 +157,11 @@
             :heightBox="'auto'" 
             :dataBoxOpen="seenBoxOpen"
             :contentBox="seenBoxContent()" 
-            @close-seen-box="openCloseSeenBox()"/>
+            @close-seen-box="openCloseSeenBox()"
+            @seen-post-api="abc"
+            @get-id-post = getIdPost
+            :dataIDPost="dataIDPost"
+            />  
         </div>
 
         <!-- Info User Post Box -->
@@ -184,6 +188,7 @@
             @close-upload-box="openCloseUploadBox()"
             @file-sending="fileSending"
             />
+            
         </div>
 
       
@@ -197,7 +202,7 @@ import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_upload} 
 
 export default {
     name: "PostInfo",
-    props: ["dataPostAPI"],
+    props: ["dataPostAPI", "idPost"],
     components: { ButtonPost, Box },
     data(){
         return{
@@ -220,6 +225,8 @@ export default {
             AttachJsonString: [],
             subComment: '',
 
+            dataSeenPost: [],
+
             // icon
             icon_noneHeart: ic_noneHeart,
             icon_comment: ic_comment,
@@ -227,6 +234,15 @@ export default {
             icon_closeEyes: ic_closeEyes,
             icon_attacch: ic_attach,
             icon_upload: ic_upload,
+
+            //Seeb box 
+            dataIDPost: '',
+
+            departmentID: '',
+            fullName: '',
+            userName: '',
+            userID: '',
+            updateTime: '',
 
 
             // upload file
@@ -239,6 +255,7 @@ export default {
         }
     },
     mounted(){
+        this.getIdPost()
     },  
 
     created(){
@@ -251,7 +268,23 @@ export default {
        }
        this.keyPressClose()
     },
-    methods:{ 
+    methods:{
+        getIdPost(){
+            this.dataIDPost = this.idPost    
+        },
+
+        abc(value){
+            for(var element=0; element<= value[0].length; element++ ){
+                const valueGet = value[0][element]
+                
+                this.departmentID = valueGet.DepartmentID,
+                this.fullName =  valueGet.FullName,
+                this.updateTime = valueGet.UpdateTime,
+                this.userID = valueGet.UserID,
+                this.userName = valueGet.UserName 
+            }       
+        },
+
         fileSending(value) {
             console.log('method')
 
@@ -382,9 +415,10 @@ export default {
                         </div>
                             
                         <div class="user-seen-info">
-                            <span>Username</span>
-                            <span>name - class</span>
-                            <span>time</span>
+                            <span>${this.userID}</span>
+                            <span>${this.userName} -${this.departmentID} </span>
+                            <span>${this.updateTime}</span>
+                            <p></p>
     
                         </div>
                     </div>

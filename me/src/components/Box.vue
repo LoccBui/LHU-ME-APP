@@ -1,16 +1,27 @@
 <template>
   <div id="box-container" :style="cssProps">
      <div v-html="contentBox"></div>
+     
+     <slot></slot> 
+
+     <div v-for="(item, index) of dataSeenPostAPI" :key="index">
+        <h1>{{item.DepartmentID}}</h1>
+     </div>
+
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'Box',
-    props: ['widthBox', 'heightBox', 'contentBox','dataBoxOpen', 'type'],
+    props: ['widthBox', 'heightBox', 'contentBox','dataBoxOpen', 'type', 'dataIDPost'],
     data() {
         return {
             dataOpenBox: this.dataBoxOpen,
+            dataSeenPostAPI: []
+            
         }
     },
     computed:{
@@ -42,13 +53,31 @@ export default {
         shareBoxState(){
             this.closeBox('close-share-box')
             this.preventScroll()
+
         },
 
         seenBoxState(){      
             this.closeBox('close-seen-box')
             this.preventScroll()
 
+            this.$emit('get-id-post')
 
+
+            try {    
+            axios.post('/MessageView_Select',{
+            "MessageID": `${this.dataIDPost}`
+            })
+            .then(response => {
+                //  console.log(response.data.data)
+                this.dataSeenPostAPI.push(response.data.data);
+                // console.log(this.dataSeenPostAPI)
+                this.$emit('seen-post-api',this.dataSeenPostAPI )
+                // this.newestOrderTime = this.dataPostAPI.slice(-1).pop().OrderTime
+            }) 
+            } catch (error) {
+                console.log(error)
+                this.loading= true
+            }
         },
 
         infoUserBoxState(){
@@ -251,7 +280,7 @@ export default {
     .user-seen-info{
         display: flex;
         flex-direction: column;
-        text-align: start;
+        align-items: flex-start;
         margin-left: 10px;
     }   
 }

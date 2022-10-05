@@ -5,9 +5,9 @@
     </div>
 
     <div v-else class="post-container" >
-      <div  v-for="(post,index) in dataPostAPI" :key="index">
+      <div  v-for="(post) in dataPostAPI" :key="post.MessageID">
           <div class="space">
-            <PostInfo :dataPostAPI="post"  />
+            <PostInfo :dataPostAPI="post" :idPost="post.MessageID" />
           </div>
       </div>          
     </div>
@@ -36,8 +36,10 @@ export default {
     beforeMount() {
        this.getAPIPost()
     },
+
     
    methods: {
+
       getAPIPost(){
         try {    
         axios.post('/MessageHome_Select',{
