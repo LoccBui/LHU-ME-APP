@@ -25,6 +25,7 @@ export default {
             icon_openEyes: ic_openEyes,
             icon_love: ic_love,
             icon_noneHeart: ic_noneHeart,
+            dataBtn: this.dataButton,
         }
     },
     
@@ -33,12 +34,20 @@ export default {
             if(this.typeBtn === 'love'){
                 this.sourceImage = `${this.icon_love}`
                 this.typeBtn = "loved"
-                this.dataButton++
+                this.dataBtn++
+                this.$emit('update-data-button', {
+                    data: this.dataBtn,
+                    type: 'love'
+                })
             }
             else if(this.typeBtn === 'loved') {
                 this.sourceImage = `${this.icon_noneHeart}`
                 this.typeBtn = "love"
-                this.dataButton--
+                this.dataBtn--
+                this.$emit('update-data-button',{
+                    data: this.dataBtn,
+                    type: 'love'
+                })
             }
 
             if(this.typeBtn === 'comment') {
@@ -51,7 +60,11 @@ export default {
             if(this.typeBtn === 'see'){
                 this.sourceImage = `${this.icon_openEyes}`
                 this.typeBtn = "saw"
-                this.dataButton++
+                this.dataBtn++
+                this.$emit('update-data-button',{
+                    data: this.dataBtn,
+                    type: 'saw'
+                })
             }
 
         }

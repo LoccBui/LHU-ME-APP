@@ -53,7 +53,6 @@ export default {
         shareBoxState(){
             this.closeBox('close-share-box')
             this.preventScroll()
-
         },
 
         seenBoxState(){      
@@ -108,10 +107,7 @@ export default {
                     this.$emit('file-sending', files[0].name)   
                 }
             });
-
-
-            
-           
+   
         },
 
         checkBoxType(){
@@ -239,13 +235,6 @@ export default {
     z-index: 1000;
     border-radius: 12px;
     padding: 5px;
-
-
-    .input-share{
-        text-align: start;
-        display: flex;
-        flex-direction: column;
-    }
 
 }
 
