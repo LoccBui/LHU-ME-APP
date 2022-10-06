@@ -18,7 +18,7 @@
 
 
             <div class="post-expand">
-                <img @click="showDropDownMenu()" class="arrow-expand" src="https://img.icons8.com/ios/20/000000/expand-arrow--v1.png"/>
+                <img @click="showDropDownMenu()" class="arrow-expand" :src="`${this.icon_downArrow}`"/>
             </div>
 
             </div>
@@ -28,17 +28,12 @@
             
             <h1>{{dataSeenPost.UserID}}</h1>
             
-            <!-- <div v-for="(item, index)  of testSubCom" :key="index">   
-                {{item.concat('')}}
-            </div> -->
-
-
 
             <div class="wrap-image">
                 <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
 
                     <img  :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
-                    class="img-attach" alt="File" 
+                    class="ic-size-20" alt="File" 
                     />
                 </div>
             </div>
@@ -135,19 +130,19 @@
             <div class="post-menu" v-if="postMenuDropDownOpen">
                     <h5 class="post-menu-item ">
                         <div class="drop-down-icon">
-                            <img class="abc" src="https://img.icons8.com/ios/18/000000/appointment-reminders--v1.png"/>
+                            <img class="ic-size-20" :src="`${this.icon_notification}`"/>
                         </div>
                         Không nhận thông báo
                     </h5>
                     <h5 class="post-menu-item">
                         <div class="drop-down-icon">
-                            <img src="https://img.icons8.com/material-rounded/18/000000/copy.png"/>
+                            <img class="ic-size-20" :src="`${this.icon_copy}`"/>
                         </div>
                         Sao chép bài viết
                     </h5>
                     <h5 class="post-menu-item">
                         <div class="drop-down-icon">
-                            <img src="https://img.icons8.com/ios-glyphs/20/000000/error--v1.png"/>
+                            <img class="ic-size-20" :src="`${this.icon_alert}`"/>
                         </div>
                         Báo cáo vi phạm
                     </h5>
@@ -160,6 +155,7 @@
         <SeenPost v-if="seenBoxOpen"            
             :widthBox="'500px'"
             :heightBox="'auto'" 
+            :dataIDPost="dataIDPost"
             @close-box="closeBox"
          />
 
@@ -188,7 +184,7 @@
 </template>
 
 <script>
-import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_upload} from '../assets/img/Image'
+import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_downArrow, ic_notification, ic_copy, ic_alert} from '../assets/img/Image'
 import Box from './Box.vue';
 import SeenPost from './SeenPost.vue'
 import ShareBox from './ShareBox.vue';
@@ -229,7 +225,10 @@ export default {
             icon_share: ic_share,
             icon_closeEyes: ic_closeEyes,
             icon_attacch: ic_attach,
-            icon_upload: ic_upload,
+            icon_downArrow: ic_downArrow,
+            icon_notification: ic_notification,
+            icon_copy: ic_copy,
+            icon_alert: ic_alert,
 
             //Seeb box 
             dataIDPost: '',
@@ -314,6 +313,7 @@ export default {
 
         getIdPost(){
             this.dataIDPost = this.idPost    
+            console.log(this.dataIDPost)
         },
 
         // Update Value Button Post Function 
@@ -349,6 +349,7 @@ export default {
         },
 
         handlePostAPI(data){
+
             this.content = data.Contents   
             this.numberLiked = data.NumberLike
             this.NumberComment = data.NumberComment
@@ -458,6 +459,11 @@ export default {
     }
 
     .post-expand{
+
+        .arrow-expand{
+            width: 20px;
+        }
+
         .arrow-expand:hover{
             cursor: pointer;
         }
@@ -470,6 +476,10 @@ export default {
     text-align: start;
     padding: 10px 0;
     line-height: 25px;
+}
+
+.ic-size-20{
+    width: 20px;
 }
 
 
@@ -586,13 +596,6 @@ export default {
         cursor: pointer;
     }
 }
-
-.img-attach{
-    width: 100%;
-    height: 100%;
-    background-color: #1565C0;
-}
-
 
 .comment-cover{
     text-align: start;

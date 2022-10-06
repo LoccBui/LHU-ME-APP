@@ -37,7 +37,7 @@ export default {
        this.getAPIPost()
     },
 
-    
+ 
    methods: {
 
       getAPIPost(){

@@ -24,8 +24,7 @@
     data() {
         return {
             dataOpenBox: this.dataBoxOpen,
-            dataSeenPostAPI: []
-            
+            dataSeenPostAPI: []   
         }
     },
     computed:{
@@ -41,9 +40,18 @@
  }
  </script>
  
- <!-- Add "scoped" attribute to limit CSS to this component only -->
  <style lang="scss" scoped>
+#container{
+    height: var(--heightBox);
+    max-height: 500px;
+    overflow: hidden;
+}
 
+.header-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .overlay{
     position: fixed;
@@ -56,10 +64,5 @@
 }
 
 
-.header-box{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
- </style>
+</style>
