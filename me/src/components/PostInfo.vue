@@ -5,13 +5,17 @@
             <div class="header-post">
             
                 <div class="user-box">
-                    <div class="avatar-post">
+                    <div class="avatar-post" > 
                         <img :src="`https://file.lhu.edu.vn/me/avatar/${Avatar}.jpg`" 
-                        alt="Avatar" class="avatar-self">
+                        alt="Avatar" class="avatar-self"
+                        @click="openCloseInfoBox()"
+                        >
                     </div>
 
                     <div class="post-box-user">
-                        <span class="post-user" v-html="SourceName" @click="openCloseInfoBox()" ></span>
+                        <span class="post-user" v-html="SourceName" @click="openCloseInfoBox()" 
+                        
+                        ></span>
                         <span class="post-time">2 giờ trước</span>
                     </div>
                 </div>
@@ -33,7 +37,7 @@
                 <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
 
                     <img  :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
-                    class="ic-size-20" alt="File" 
+                     alt="File" 
                     />
                 </div>
             </div>
@@ -168,8 +172,7 @@
 
         <!-- Info User Box -->
         <InfoUserBox v-if="infoUserBoxOpen"          
-            :widthBox="'600px'"
-            :heightBox="'auto'" 
+            :dataIDUser="this.Avatar"
             @close-box="closeBox"
         />
 
@@ -230,6 +233,7 @@ export default {
             icon_copy: ic_copy,
             icon_alert: ic_alert,
 
+
             //Seeb box 
             dataIDPost: '',
 
@@ -247,7 +251,6 @@ export default {
             testSubCom: '',
             nameFile: '',
 
-            // Box show
             
         }
     },
@@ -266,6 +269,13 @@ export default {
        this.keyPressClose()
     },
     methods:{
+        // aaaa(value){
+        //     alert(value)
+        //     this.Avatar = value
+        //     console.log(this.Avatar)
+        //     this.infoUserBoxOpen = true
+        // },
+
         closeBox(typeBox){
             switch(typeBox){
                 case 'seenBox':
@@ -313,7 +323,6 @@ export default {
 
         getIdPost(){
             this.dataIDPost = this.idPost    
-            console.log(this.dataIDPost)
         },
 
         // Update Value Button Post Function 
@@ -385,7 +394,6 @@ export default {
                 }
             };
         },
-
         
         enableScroll(){
             var scroll = document.body.style.overflow 
@@ -431,12 +439,6 @@ export default {
     .user-box{
         display: flex;
 
-        .avatar-self{
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
 
         .post-box-user{
             display: flex;
@@ -548,15 +550,6 @@ export default {
     align-items: center;
     padding: 20px 0 0;
 
-    .avatar-post{
-
-        .avatar-self{
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-    }
 
     .input-new-comment{
         flex: 1;
@@ -587,6 +580,20 @@ export default {
 }
 
 
+.avatar-self{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
+
+
 .wrapper-left-comment{
     display: flex;
     padding: 2px;
@@ -613,12 +620,6 @@ export default {
     }
 
 
-    .avatar-self{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        vertical-align: middle;
-    }
 
     .comment-box{
         display: flex;

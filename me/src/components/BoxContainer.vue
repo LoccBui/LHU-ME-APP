@@ -35,16 +35,25 @@
             }
         }       
     },
-    mounted(){
+    methods:{
+        expandBoxHover(){
+            alert("à")
+        }
     }
  }
  </script>
  
- <style lang="scss" scoped>
+ <style lang="scss" >
 #container{
+    width: var(--widthBox);
     height: var(--heightBox);
-    max-height: 500px;
-    overflow: hidden;
+    background-color: white;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 12px;
+    padding: 5px;
 }
 
 .header-box{
@@ -52,7 +61,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
 .overlay{
     position: fixed;
     top: 0;
@@ -62,7 +70,5 @@
     background-color: rgba(0,0,0, 0.4);
     z-index: 3;
 }
-
-
 
 </style>

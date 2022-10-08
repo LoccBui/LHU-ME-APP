@@ -1,5 +1,4 @@
 <template>
-    <div id="box-container" :style="cssProps">
     <BoxContainer  :widthBox="width" :heightBox="height" >
             <template #header>
                 <div class="header-box">
@@ -28,7 +27,6 @@
 
             <template #footer></template>
         </BoxContainer>
-    </div>
 </template>
 
 <script>
@@ -63,25 +61,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#container{
-    position: relative;
-    width: var(--widthBox);
-    height: var(--heightBox);
-    background-color: white;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    z-index: 100;
-    border-radius: 12px;
-    padding: 5px;
-}
 
-
-.input-share{
-    text-align: start;
-    display: flex;
-    flex-direction: column;
-}
-
-</style>>
+    .input-share{
+        text-align: start;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

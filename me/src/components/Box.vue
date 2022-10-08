@@ -137,7 +137,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<!-- <style lang="scss"> -->
 #box-container{
     width: var(--widthBox);
     height: var(--heightBox);
@@ -277,48 +277,48 @@ export default {
 
 // Info User Post Box
 
-.info-user-body{
-    display: flex;
-    align-items: center;
+// .info-user-body{
+//     display: flex;
+//     align-items: center;
 
-    .info-user-img-cover{
+//     .info-user-img-cover{
 
-        .info-user-img{
-            border-radius: 50%;
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
-        }
-    }
+//         .info-user-img{
+//             border-radius: 50%;
+//             width: 200px;
+//             height: 200px;
+//             object-fit: cover;
+//             box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+//         }
+//     }
 
-    .info-user-detail{
-        height: 200px;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        padding: 20px;
+//     .info-user-detail{
+//         height: 200px;
+//         display: flex;
+//         flex: 1;
+//         flex-direction: column;
+//         align-items: center;
+//         justify-content: space-around;
+//         padding: 20px;
         
-        .info-user-name{
-            font-size: 20px;
-            font-weight: 600;
-            color:#248fc1;
+//         .info-user-name{
+//             font-size: 20px;
+//             font-weight: 600;
+//             color:#248fc1;
 
-        }
+//         }
 
-        .btn-add-info-user{
-            width: 100%;
-            border-radius: 20px;
-            padding: 10px;
-            background-color: #248fc1;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    }
-}
+//         .btn-add-info-user{
+//             width: 100%;
+//             border-radius: 20px;
+//             padding: 10px;
+//             background-color: #248fc1;
+//             color: white;
+//             border: none;
+//             cursor: pointer;
+//         }
+//     }
+// }
 
 // Upload File
 .upload-file-body{
