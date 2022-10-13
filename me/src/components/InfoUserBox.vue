@@ -136,6 +136,7 @@ export default {
     font-size: 25px;
     font-weight: bold;
     margin-top: 20px;
+    color: #1565C0;
 }
 
 .info-user-img{

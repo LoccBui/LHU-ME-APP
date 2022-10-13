@@ -8,12 +8,12 @@
                     <div class="avatar-post" > 
                         <img :src="`https://file.lhu.edu.vn/me/avatar/${Avatar}.jpg`" 
                         alt="Avatar" class="avatar-self"
-                        @click="openCloseInfoBox()"
+                        @click="seeProfie(Avatar)"
                         >
                     </div>
 
                     <div class="post-box-user">
-                        <span class="post-user" v-html="SourceName" @click="openCloseInfoBox()" 
+                        <span class="post-user" v-html="SourceName" @click="seeProfie(Avatar)" 
                         
                         ></span>
                         <span class="post-time">2 giờ trước</span>
@@ -36,11 +36,13 @@
             <div class="wrap-image">
                 <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
 
-                    <img  :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
-                     alt="File" 
-                    />
+                <img style="width: 100%" :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
+                    alt="File" 
+                />
+
                 </div>
             </div>
+
 
 
             <div class="infoURL">
@@ -84,6 +86,11 @@
 
             <!-- Comment -->
             <div class="comment-post-info">
+
+                <div class="more-commemt">
+                    <span>Còn bình luận nữa</span>
+                </div>
+
                 <div> {{CommentJsonString || ''}}</div>
 
                 <div v-for="(comment,index) of CommentJsonString" :key="index" class="comment-cover">
@@ -98,7 +105,7 @@
                             </div>
                 
                             <div class="comment-box">
-                                <span class="comment-name">{{comment.SourceName}}</span>
+                                <span @click="seeProfie(comment.Avatar)"  class="comment-name">{{comment.SourceName}}</span>
                                 <span v-html="comment.CommentText" class="comment-content"></span>      
 
                                 <div class="comment-function">         
@@ -167,12 +174,13 @@
         <ShareBox v-if="shareBoxOpen"      
             :widthBox="'500px'"
             :heightBox="'auto'" 
+            :dataIDPost="dataIDPost"
             @close-box="closeBox"
         />
 
         <!-- Info User Box -->
         <InfoUserBox v-if="infoUserBoxOpen"          
-            :dataIDUser="this.Avatar"
+            :dataIDUser="this.idAvatarUser"
             @close-box="closeBox"
         />
 
@@ -233,8 +241,11 @@ export default {
             icon_copy: ic_copy,
             icon_alert: ic_alert,
 
+            //Info box
+            idAvatarUser: '',
 
-            //Seeb box 
+
+            //Seen box 
             dataIDPost: '',
 
             departmentID: '',
@@ -269,12 +280,6 @@ export default {
        this.keyPressClose()
     },
     methods:{
-        // aaaa(value){
-        //     alert(value)
-        //     this.Avatar = value
-        //     console.log(this.Avatar)
-        //     this.infoUserBoxOpen = true
-        // },
 
         closeBox(typeBox){
             switch(typeBox){
@@ -394,6 +399,13 @@ export default {
                 }
             };
         },
+
+        seeProfie(idUserAvatar){
+            this.idAvatarUser = idUserAvatar
+            console.log(this.idAvatarUser)
+            
+            this.openCloseInfoBox();
+        },
         
         enableScroll(){
             var scroll = document.body.style.overflow 
@@ -429,6 +441,7 @@ export default {
     margin-top: 100px;
 }
 
+
 .header-post{
     display: flex;
     justify-content: space-between;
@@ -449,6 +462,7 @@ export default {
             .post-user{
                 color: #1565C0;
                 cursor: pointer;        
+
                 &:hover{
                     text-decoration: underline;
                 }       
@@ -631,6 +645,10 @@ export default {
         .comment-name{
             color:#1565C0;
             font-weight: bold;
+
+            &:hover{
+                text-decoration: underline;
+            }
         }
 
         .comment-function{
@@ -644,8 +662,13 @@ export default {
                 cursor: pointer;
             }
 
+                        
             .comment-response{
                 margin-left: 10px;
+
+                &:hover{
+                    text-decoration: underline;
+                }
             }
 
         }
