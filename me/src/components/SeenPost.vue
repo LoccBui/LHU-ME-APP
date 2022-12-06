@@ -146,6 +146,11 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         margin-left: 10px;
+
+        .info-fullname{
+            font-weight: bold;
+            color: #1565C0;
+        }
     }   
 
   

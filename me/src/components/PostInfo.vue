@@ -36,7 +36,7 @@
             <div class="wrap-image">
                 <div v-for="(file,index) of AttachJsonString" :key="index" class="attach-file-post">         
 
-                <img style="width: 100%" :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
+                <img :src="`https://file.lhu.edu.vn/me/attach/${file.FileID}/${file.FileName}`"
                     alt="File" 
                 />
 
@@ -47,6 +47,8 @@
 
             <div class="infoURL">
                 <span v-html="URLInfo"></span>
+                <img src="" alt="a">
+
             </div>
 
             <div class="post-function">
@@ -87,7 +89,7 @@
             <!-- Comment -->
             <div class="comment-post-info">
 
-                <div class="more-commemt">
+                <div class="more-comment">
                     <span>Còn bình luận nữa</span>
                 </div>
 
@@ -116,8 +118,8 @@
                             </div>                            
                         </div>
 
-                        <div class="love-comment" @click="testValue()" >
-                            <img class="post-function-icon" :src="`${icon_noneHeart}`" alt="Love Comment Icon">
+                        <div class="love-comment" >
+                            <img @click="loveComment()" class="love-comment-icon ic-size-20"  :src="`${icon_noneHeart}`" alt="Love Comment Icon">
                         </div>                         
                     </div>
                 
@@ -195,7 +197,7 @@
 </template>
 
 <script>
-import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_downArrow, ic_notification, ic_copy, ic_alert} from '../assets/img/Image'
+import {ic_noneHeart, ic_comment, ic_share, ic_closeEyes, ic_attach, ic_downArrow, ic_notification, ic_copy, ic_alert,ic_love } from '../assets/img/Image'
 import Box from './Box.vue';
 import SeenPost from './SeenPost.vue'
 import ShareBox from './ShareBox.vue';
@@ -227,6 +229,7 @@ export default {
             CommentJsonString: [],
             AttachJsonString: [],
             subComment: '',
+            numberLikeComment: '',
 
             dataSeenPost: [],
 
@@ -240,6 +243,7 @@ export default {
             icon_notification: ic_notification,
             icon_copy: ic_copy,
             icon_alert: ic_alert,
+            icon_love: ic_love,
 
             //Info box
             idAvatarUser: '',
@@ -340,6 +344,7 @@ export default {
             }
         },
 
+
         abc(value){
             for(var element=0; element<= value[0].length; element++ ){
                 const valueGet = value[0][element]
@@ -377,7 +382,8 @@ export default {
             this.CommentJsonString = JSON.parse(data.CommentJsonString)
             this.AttachJsonString = JSON.parse(data.AttachJsonString)
 
-
+            // this.numberLikeComment = JSON.parse(data.CommentJsonString)[0].NumberLike
+            console.log(this.numberLikeComment)
             // this.testSubCom = JSON.parse(data.CommentJsonString)[0].subComm
         },
 
@@ -406,6 +412,16 @@ export default {
             
             this.openCloseInfoBox();
         },
+
+        // Comment 
+        loveComment(){
+            var iconLoveComment = document.querySelector(".love-comment-icon")
+            if(iconLoveComment.src === this.icon_noneHeart ){
+                iconLoveComment.src = this.icon_love
+            }else {
+                iconLoveComment.src = this.icon_noneHeart
+            }         
+        },
         
         enableScroll(){
             var scroll = document.body.style.overflow 
@@ -426,7 +442,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 .post-info-container{
     position: relative;
@@ -461,11 +477,7 @@ export default {
 
             .post-user{
                 color: #1565C0;
-                cursor: pointer;        
-
-                &:hover{
-                    text-decoration: underline;
-                }       
+                cursor: pointer;          
             }
 
             .sharedUser{
@@ -531,6 +543,13 @@ export default {
 
 }
 
+.post-user:hover,
+.more-comment:hover,
+.post-action-like-info:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .post-action-like-info{
     display: flex;
     align-items: center;
@@ -543,11 +562,6 @@ export default {
     .number-like-info{
         color:#1565C0;
         margin-left: 5px;
-
-        &:hover{
-            text-decoration: underline;
-            cursor: pointer;
-        }
     }
 
 }
@@ -556,6 +570,11 @@ export default {
     width: 100%;
     border: thin solid rgba(84, 84, 87, 0.25);   
     height: auto;
+
+
+    .more-comment{
+        text-align: start;
+    }
 }
 
 .post-new-comment{
@@ -680,12 +699,6 @@ export default {
     .love-comment{
         display: flex;
         align-items: center;
-
-
-        .post-function-icon{
-            width: 20px;
-            height: 20px;
-        }
     }
 
 }
