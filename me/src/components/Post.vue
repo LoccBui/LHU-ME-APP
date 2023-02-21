@@ -21,6 +21,7 @@
 <script>
 import PostInfo from './PostInfo.vue'
 
+import axios from 'axios';
 
 
 

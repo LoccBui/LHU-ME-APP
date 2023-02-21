@@ -3,7 +3,7 @@ axios.defaults.baseURL = 'https://tapi.lhu.edu.vn/me';
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
-    const token ="eyJzaWQiOiIxMzlFNkM0MDFEQkIwMjM2IiwiZXhwIjoyMTM3Njg2NDQ5fQ.3uyN1Cg3iINf16JboEd2WaWXGOKHSC7rcuJb-qJ5wiA";
+    const token ="BaqAJtMHSNL0CY_a-lBk4hnfqAhO4yyU4LeO8QAH1F8.26D5D42974469E86";
     config.headers = config.headers || {};
     config.headers['Content-Type'] = 'application/json';
     config.headers['authorization']=`Bearer ${token}`

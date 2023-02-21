@@ -93,7 +93,7 @@
                     <span>Còn bình luận nữa</span>
                 </div>
 
-                <div> {{CommentJsonString || ''}}</div>
+                <!-- <div> {{CommentJsonString || ''}}</div> -->
 
                 <div v-for="(comment,index) of CommentJsonString" :key="index" class="comment-cover">
 
@@ -101,7 +101,7 @@
                         <div class="left-comment-cover">
                         
                             <div class="user-comment">
-                                <img class="avatar-self" 
+                                <img class="avatar-comment" 
                                 :src="`https://file.lhu.edu.vn/me/avatar/${comment.Avatar}.jpg`" 
                                 alt="User" />
                             </div>
@@ -129,7 +129,7 @@
 
             <div class="post-new-comment">
                 <div class="avatar-post">
-                    <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self">
+                    <img src="../assets/img/loc.jpg" alt="Avatar" class="avatar-self-comment">
                 </div>
 
                 <input ref="inputNewComment" class="input-new-comment" type="text" placeholder="Viết bình luận..." />
@@ -442,7 +442,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
 
 .post-info-container{
     position: relative;
@@ -588,7 +589,7 @@ export default {
         flex: 1;
         padding: 10px;
         margin-left: 10px;
-        text-indent: 10px; //margin placeholder
+        text-indent: 10px; 
         border-radius: 20px;
         border: thin solid rgba(84, 84, 87, 0.25);   
 
@@ -612,10 +613,40 @@ export default {
 
 }
 
-
-.avatar-self{
+.avatar-self-comment{
     width: 40px;
     height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.avatar-self[data-v-0f27da9e]{
+    width: 40px;
+    height: inherit;
+    border-radius: 50%;
+    object-fit: cover;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.avatar-comment{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
+.avatar-self{
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     object-fit: cover;
 
@@ -630,7 +661,6 @@ export default {
 .wrapper-left-comment{
     display: flex;
     padding: 2px;
-    background-color: wheat;    
 
     &:hover{
         cursor: pointer;
